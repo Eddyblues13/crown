@@ -161,6 +161,15 @@
                         </a>
                     </li>
 
+
+                    <!-- Withdraw Fund -->
+                    <li class="side-nav-item">
+                        <a href="{{ route('user.show.plans') }}" class="side-nav-link">
+                            <i class="uil-ellipsis-h"></i>
+                            <span> Plans</span>
+                        </a>
+                    </li>
+
                     <!-- Stock Market -->
                     <li class="side-nav-item">
                         <a href="#stock-submenu" data-bs-toggle="collapse" class="side-nav-link">

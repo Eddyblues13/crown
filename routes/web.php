@@ -148,8 +148,10 @@ Route::prefix('user')->middleware('user')->group(function () {
 
 
     //Route::post('/logout', [HomeController::class, 'UserLogout'])->name('logout');
-
     Route::resource('trade-histories', TradeHistoryController::class);
+    Route::get('/plans', [HomeController::class, 'showPlans'])->name('user.show.plans');
+    Route::get('/plan-history', [HomeController::class, 'showPlanHistory'])->name('user.show.plan.history');
+    Route::post('/plan-history', [HomeController::class, 'storePlanHistory'])->name('user.store.plan.history');
 });
 
 
@@ -284,5 +286,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/stock-history', [AdminController::class, 'viewStockHistory'])->name('admin.stock.history');
 
         Route::get('/trade-histories', [AdminController::class, 'viewTradeHistory'])->name('admin.trade_histories');
+
+        Route::get('/trading-plans/create', [TradingPlanController::class, 'create'])->name('admin.create-trading-plan');
+        Route::post('/trading-plans/store', [TradingPlanController::class, 'store'])->name('admin.store-trading-plan');
+        Route::get('/trading-plans', [TradingPlanController::class, 'index'])->name('admin.view-trading-plans');
+        Route::get('/trading-plans/edit/{id}', [TradingPlanController::class, 'edit'])->name('admin.edit-trading-plan');
+        Route::post('/trading-plans/update/{id}', [TradingPlanController::class, 'update'])->name('admin.update-trading-plan');
+        Route::delete('/trading-plans/delete/{id}', [TradingPlanController::class, 'destroy'])->name('admin.delete-trading-plan');
+
+        Route::post('/add-signal-strength', [AdminController::class, 'addSignalStrength'])->name('admin.add_signal_strength');
     });
 });

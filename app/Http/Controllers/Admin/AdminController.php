@@ -941,4 +941,26 @@ class AdminController extends Controller
         $tradeHistories = TradeHistory::with('user')->get();
         return view('admin.user_trade_history', compact('tradeHistories'));
     }
+
+    public function addSignalStrength(Request $request)
+    {
+        // Validate the input
+        $request->validate([
+            'signal_strength' => 'required|integer|min:0|max:100',
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        // Find the user by ID
+        $user = User::find($request->user_id);
+
+        if ($user) {
+            // Update the user's signal_strength
+            $user->signal_strength = $request->signal_strength;
+            $user->save();
+
+            return redirect()->back()->with('message', 'Signal strength updated successfully.');
+        }
+
+        return redirect()->back()->with('error', 'User not found.');
+    }
 }

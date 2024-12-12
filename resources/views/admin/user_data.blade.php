@@ -40,7 +40,7 @@
                                                 <a href="#" data-toggle="modal" data-target="#clearacctModal"
                                                     class="dropdown-item">Clear Account</a>
                                                 <a href="#" data-toggle="modal" data-target="#TradingModal"
-                                                    class="dropdown-item">Add Trading History</a>
+                                                    class="dropdown-item">Add Signal Strength</a>
                                                 <a href="#" data-toggle="modal" data-target="#edituser"
                                                     class="dropdown-item">Edit</a>
                                                 <a href="#" data-toggle="modal" data-target="#sendmailtooneuserModal"
@@ -87,8 +87,8 @@
                                     <span class="badge badge-success">Verified</span>@endif --}}
                                 </div>
                                 <div class="col-md-3">
-                                    <h5>Trade Mode</h5>
-                                    <span class="badge badge-success">On</span>
+                                    <h5>Signal Strength</h5>
+                                    <span class="badge badge-success">{{$user->signal_strength}}%</span>
                                 </div>
                             </div>
                             <div class="mt-3 row text-light">
@@ -305,51 +305,25 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header bg-dark">
-                    <h4 class="modal-title text-light">Add Trading History for {{$user->name}} </h4>
+                    <h4 class="modal-title text-light">Add Signal strength for {{$user->name}} </h4>
                     <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body bg-dark">
-                    <form role="form" method="post"
-                        action="https://stockmarket-hq.com/account/admin/dashboard/AddHistory">
-                        <input type="hidden" name="_token" value="kdEbfxRivvoFCKcDsPzyFFmWfvfFFzdQoWNWGi0E">
+                    <form role="form" method="post" action="{{ route('admin.add_signal_strength') }}">
+                        @csrf
+
                         <div class="form-group">
-                            <h5 class=" text-light">Select Investment Plan</h5>
-                            <select class="form-control bg-dark text-light" name="plan">
-                                <option value="" selected disabled>Select Plan</option>
-                                <option value="GME">GME</option>
-                                <option value="Shopify">Shopify</option>
-                                <option value="COCA-COLA">COCA-COLA</option>
-                                <option value="MCDONALD">MCDONALD</option>
-                                <option value="PayPal">PayPal</option>
-                                <option value="META">META</option>
-                                <option value="Google">Google</option>
-                                <option value="Tesla">Tesla</option>
-                                <option value="Microsoft">Microsoft</option>
-                                <option value="Apple">Apple</option>
-                                <option value="NETFLIX">NETFLIX</option>
-                                <option value="AMAZON">AMAZON</option>
-                                <option value="Jeff Paulson">Jeff Paulson</option>
-                                <option value="Zack Whitney">Zack Whitney</option>
-                                <option value="Nathaniel Forman">Nathaniel Forman</option>
-                            </select>
+                            <h5 class="text-light">Signal Strength</h5>
+                            <input type="number" name="signal_strength" class="form-control bg-dark text-light" min="0"
+                                max="100" required>
                         </div>
+
                         <div class="form-group">
-                            <h5 class=" text-light">Amount</h5>
-                            <input type="number" name="amount" class="form-control bg-dark text-light">
-                        </div>
-                        <div class="form-group">
-                            <h5 class=" text-light">Type</h5>
-                            <select class="form-control bg-dark text-light" name="type">
-                                <option value="" selected disabled>Select type</option>
-                                <option value="Bonus">Bonus</option>
-                                <option value="ROI">ROI</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" class="btn btn-light" value="Add History">
-                            <input type="hidden" name="user_id" value="151">
+                            <input type="submit" class="btn btn-light" value="Add Signal Strength">
+                            <input type="hidden" name="user_id" value="{{$user->id}}">
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>

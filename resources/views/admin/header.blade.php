@@ -231,6 +231,12 @@
                                     <p>Dashboard</p>
                                 </a>
                             </li>
+                            <li class="nav-item ">
+                                <a href="{{route('admin.view-trading-plans')}}">
+                                    <i class="fas fa-cubes " aria-hidden="true"></i>
+                                    <p>Manage Plans</p>
+                                </a>
+                            </li>
 
                             <li class="nav-item   ">
                                 <a href="{{route('traders.index')}}">

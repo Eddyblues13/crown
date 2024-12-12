@@ -22,6 +22,7 @@ use App\Mail\TradeStartedMail;
 use App\Models\AccountBalance;
 use App\Models\AccountDetails;
 use App\Models\PaymentSetting;
+use App\Models\PlanHistory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -49,6 +50,8 @@ class HomeController extends Controller
     public function index()
     {
         $data['deposits'] = Deposit::where('user_id', Auth::id())->get();
+
+        $data['kyc_status'] = Document::where('user_id', Auth::id())->pluck('status')->first();
 
         // Sum of pending deposits
         $data['pending_deposits_sum'] = Deposit::where('user_id', Auth::id())
@@ -871,6 +874,151 @@ class HomeController extends Controller
 
         return view('dashboard.stock_history', compact('stockHistories'));
     }
+
+    public function showPlans()
+    {
+
+        $data['deposits'] = Deposit::where('user_id', Auth::id())->get();
+
+        // Sum of pending deposits
+        $data['pending_deposits_sum'] = Deposit::where('user_id', Auth::id())
+            ->where('status', '0')
+            ->sum('amount');
+
+        // Sum of successful deposits
+        $data['successful_deposits_sum'] = Deposit::where('user_id', Auth::id())
+            ->where('status', '1')
+            ->sum('amount');
+
+        // Sum of pending withdrawals
+        $data['pending_withdrawals_sum'] = Withdrawal::where('user_id', Auth::id())
+            ->where('status', '0')
+            ->sum('amount');
+
+        // Sum of successful withdrawals
+        $data['successful_withdrawals_sum'] = Withdrawal::where('user_id', Auth::id())
+            ->where('status', '1')
+            ->sum('amount');
+
+        // Sum of successful account balance
+        $data['balance_sum'] = AccountBalance::where('user_id', Auth::id())
+            ->sum('amount');
+
+        // Sum of successful account balance
+        $data['profit_sum'] = Profit::where('user_id', Auth::id())
+            ->sum('amount');
+
+        $tradingPlans = TradingPlan::all(); // Fetch all trading plans
+        return view('dashboard.buy_plan', compact('tradingPlans'), $data);
+    }
+
+    public function storePlanHistory(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'plan' => 'required|string',
+            'amount' => 'required|numeric',
+        ]);
+
+
+        $user = Auth::user(); // Assuming the user is authenticated
+        $amount = $request->amount;
+        $withdrawFrom = $request->withdraw_from;
+
+        // Validate and process withdrawal
+        switch ($withdrawFrom) {
+            case 'account_balance':
+                $accountBalance = AccountBalance::where('user_id', $user->id)->first();
+
+                if (!$accountBalance || $amount > $accountBalance->amount) {
+                    return back()->withErrors(['amount' => 'Insufficient account balance.']);
+                }
+
+                $accountBalance->amount -= $amount;
+                $accountBalance->save();
+                break;
+
+            case 'deposit':
+                $totalDeposits = $user->deposits()->where('status', '1')->sum('amount');
+                if ($amount > $totalDeposits) {
+                    return back()->withErrors(['amount' => 'Insufficient deposit balance.']);
+                }
+
+                // Deduct the amount from deposits (oldest to newest)
+                $remainingAmount = $amount;
+                $deposits = $user->deposits()
+                    ->where('status', '1')
+                    ->orderBy('created_at', 'asc')
+                    ->get();
+
+                foreach ($deposits as $deposit) {
+                    if ($remainingAmount <= 0) break;
+
+                    if ($deposit->amount >= $remainingAmount) {
+                        $deposit->amount -= $remainingAmount;
+                        $deposit->save();
+                        $remainingAmount = 0;
+                    } else {
+                        $remainingAmount -= $deposit->amount;
+                        $deposit->amount = 0;
+                        $deposit->save();
+                    }
+                }
+                break;
+
+            case 'profit':
+                $totalProfit = Profit::where('user_id', $user->id)->sum('amount');
+
+                if ($amount > $totalProfit) {
+                    return back()->withErrors(['amount' => 'Insufficient profit balance.']);
+                }
+
+                // Deduct the amount from profits (oldest to newest)
+                $remainingAmount = $amount;
+                $profits = Profit::where('user_id', $user->id)
+                    ->orderBy('created_at', 'asc')
+                    ->get();
+
+                foreach ($profits as $profit) {
+                    if ($remainingAmount <= 0) break;
+
+                    if ($profit->amount >= $remainingAmount) {
+                        $profit->amount -= $remainingAmount;
+                        $profit->save();
+                        $remainingAmount = 0;
+                    } else {
+                        $remainingAmount -= $profit->amount;
+                        $profit->amount = 0;
+                        $profit->save();
+                    }
+                }
+                break;
+
+            default:
+                return back()->withErrors(['withdraw_from' => 'Invalid withdrawal type selected.']);
+        }
+
+
+
+        PlanHistory::create([
+            'user_id' => $request->user_id,
+            'plan' => $request->plan,
+            'amount' => $request->amount,
+            'type' => $request->withdraw_from, // Specify the type
+        ]);
+
+        return redirect()->back()->with('success', 'Plan successfully purchased!');
+    }
+
+
+
+
+    public function showPlanHistory()
+    {
+        $tradingHistory = PlanHistory::where('user_id', Auth::id())->paginate(10);
+        return view('dashboard.plan_history', compact('tradingHistory'));
+    }
+
 
 
     public function UserLogout(Request $request)
