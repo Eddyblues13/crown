@@ -85,14 +85,14 @@
 
     <!-- Start Content-->
     <div class="container-fluid">
-      @if($kyc_status === '0')
+   
       <div class="small-card card widget-flat my-4 kyc-warning">
 
         <p class="text-center">you have an important task left ! Verify your account to use all crown wave stock
           service <a class="btn btn-danger" href="{{ route('user.kyc.form') }}">Verify Account</a>
         </p>
       </div>
-      @endif
+  
 
       <!-- Trading Card -->
       <div class="small-card card widget-flat my-4">
