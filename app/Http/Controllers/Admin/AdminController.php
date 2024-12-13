@@ -17,6 +17,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\TransactionNotificationMail;
 use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
@@ -659,85 +660,165 @@ class AdminController extends Controller
 
 
 
+    // public function creditDebit(Request $request)
+    // {
+    //     $type = $request['type'];
+
+    //     if ($type === 'Profit') {
+    //         $transactionType = $request['t_type'];
+    //         $creditDebit = new Profit;
+
+    //         if ($transactionType === 'Credit') {
+    //             $creditDebit->user_id = $request['user_id'];
+    //             $creditDebit->amount = $request['amount'];
+    //         } elseif ($transactionType === 'Debit') {
+    //             $creditDebit->user_id = $request['user_id'];
+    //             $creditDebit->amount = -$request['amount'];
+    //         }
+    //         $creditDebit->save();
+
+    //         return back()->with('message', 'User Profit Topped Up Successfully');
+    //     }
+
+    //     // if ($type === 'Ref_Bonus') {
+    //     //     $transactionType = $request['t_type'];
+    //     //     $creditDebit = new Refferal;
+
+    //     //     if ($transactionType === 'Credit') {
+    //     //         $creditDebit->credit = $request['amount'];
+    //     //         $creditDebit->debit = 0;
+    //     //     } elseif ($transactionType === 'Debit') {
+    //     //         $creditDebit->credit = 0;
+    //     //         $creditDebit->debit = $request['amount'];
+    //     //     }
+
+    //     //     $creditDebit->status = '1';
+    //     //     $creditDebit->user_id = $request['user_id'];
+    //     //     $creditDebit->save();
+
+    //     //     return back()->with('message', 'Referral Bonus Added Successfully');
+    //     // }
+    //     if ($type === 'balance') {
+    //         $transactionType = $request['t_type'];
+    //         $creditDebit = new AccountBalance();
+
+    //         if ($transactionType === 'Credit') {
+    //             $creditDebit->user_id = $request['user_id'];
+    //             $creditDebit->amount = $request['amount'];
+    //         } elseif ($transactionType === 'Debit') {
+    //             $creditDebit->user_id = $request['user_id'];
+    //             $creditDebit->amount = -$request['amount'];
+    //         }
+    //         $creditDebit->save();
+
+    //         return back()->with('message', 'Account Balance Added Successfully');
+    //     }
+
+
+
+    //     if ($type === 'Deposit') {
+
+    //         $transactionType = $request['t_type'];
+
+    //         $creditDebit = new Deposit;
+
+    //         if ($transactionType === 'Credit') {
+
+    //             $creditDebit->amount = $request['amount'];
+    //         } elseif ($transactionType === 'Debit') {
+
+    //             return back()->with('message', 'Sorry you can not Debit Deposit');
+    //         }
+    //         $creditDebit->deposit_type = 'Express Deposit';
+    //         $creditDebit->payment_mode = 'Express Deposit';
+    //         $creditDebit->proof = 'Express Deposit';
+    //         $creditDebit->status = '1';
+    //         $creditDebit->user_id = $request->input('user_id');
+    //         $creditDebit->save();
+
+    //         return back()->with('message', 'Deposit Added Successfully');
+    //     }
+    // }
+
+
     public function creditDebit(Request $request)
     {
         $type = $request['type'];
+        $transactionType = $request['t_type'];
+        $amount = $request['amount'];
+        $userId = $request['user_id'];
 
         if ($type === 'Profit') {
-            $transactionType = $request['t_type'];
             $creditDebit = new Profit;
 
-            if ($transactionType === 'Credit') {
-                $creditDebit->user_id = $request['user_id'];
-                $creditDebit->amount = $request['amount'];
-            } elseif ($transactionType === 'Debit') {
-                $creditDebit->user_id = $request['user_id'];
-                $creditDebit->amount = -$request['amount'];
-            }
+            $creditDebit->user_id = $userId;
+            $creditDebit->amount = $transactionType === 'Credit' ? $amount : -$amount;
             $creditDebit->save();
+
+            $this->sendTransactionEmail($userId, $transactionType, $amount, 'Profit');
 
             return back()->with('message', 'User Profit Topped Up Successfully');
         }
 
-        // if ($type === 'Ref_Bonus') {
-        //     $transactionType = $request['t_type'];
-        //     $creditDebit = new Refferal;
-
-        //     if ($transactionType === 'Credit') {
-        //         $creditDebit->credit = $request['amount'];
-        //         $creditDebit->debit = 0;
-        //     } elseif ($transactionType === 'Debit') {
-        //         $creditDebit->credit = 0;
-        //         $creditDebit->debit = $request['amount'];
-        //     }
-
-        //     $creditDebit->status = '1';
-        //     $creditDebit->user_id = $request['user_id'];
-        //     $creditDebit->save();
-
-        //     return back()->with('message', 'Referral Bonus Added Successfully');
-        // }
         if ($type === 'balance') {
-            $transactionType = $request['t_type'];
-            $creditDebit = new AccountBalance();
+            $creditDebit = new AccountBalance;
 
-            if ($transactionType === 'Credit') {
-                $creditDebit->user_id = $request['user_id'];
-                $creditDebit->amount = $request['amount'];
-            } elseif ($transactionType === 'Debit') {
-                $creditDebit->user_id = $request['user_id'];
-                $creditDebit->amount = -$request['amount'];
-            }
+            $creditDebit->user_id = $userId;
+            $creditDebit->amount = $transactionType === 'Credit' ? $amount : -$amount;
             $creditDebit->save();
 
-            return back()->with('message', 'Account Balance Added Successfully');
+            $this->sendTransactionEmail($userId, $transactionType, $amount, 'Account Balance');
+
+            return back()->with('message', 'Account Balance Updated Successfully');
         }
 
-
-
         if ($type === 'Deposit') {
-
-            $transactionType = $request['t_type'];
+            if ($transactionType === 'Debit') {
+                return back()->with('message', 'Sorry, you cannot Debit a Deposit');
+            }
 
             $creditDebit = new Deposit;
 
-            if ($transactionType === 'Credit') {
-
-                $creditDebit->amount = $request['amount'];
-            } elseif ($transactionType === 'Debit') {
-
-                return back()->with('message', 'Sorry you can not Debit Deposit');
-            }
+            $creditDebit->user_id = $userId;
+            $creditDebit->amount = $amount;
             $creditDebit->deposit_type = 'Express Deposit';
             $creditDebit->payment_mode = 'Express Deposit';
             $creditDebit->proof = 'Express Deposit';
             $creditDebit->status = '1';
-            $creditDebit->user_id = $request->input('user_id');
             $creditDebit->save();
+
+            $this->sendTransactionEmail($userId, $transactionType, $amount, 'Deposit');
 
             return back()->with('message', 'Deposit Added Successfully');
         }
     }
+
+    /**
+     * Send an email notification for the transaction.
+     *
+     * @param int $userId
+     * @param string $transactionType
+     * @param float $amount
+     * @param string $transactionCategory
+     * @return void
+     */
+    protected function sendTransactionEmail($userId, $transactionType, $amount, $transactionCategory)
+    {
+        $user = User::find($userId);
+
+        if ($user) {
+            $details = [
+                'name' => $user->name,
+                'transactionType' => $transactionType,
+                'amount' => $amount,
+                'transactionCategory' => $transactionCategory,
+                'date' => now()->toDateTimeString(),
+            ];
+
+            Mail::to($user->email)->send(new TransactionNotificationMail($details));
+        }
+    }
+
 
 
 
