@@ -73,10 +73,10 @@
                                     <span class="badge badge-success">Active</span>
                                 </div>
                                 <div class="col-md-3">
-                                    <h5>Inv. Plans</h5>
+                                    <h5>Trades</h5>
 
-                                    <a class="btn btn-sm btn-primary d-inline" href="">View
-                                        Plans</a>
+                                    <a class="btn btn-sm btn-primary d-inline" href="{{ route('admin.user.trades', $user->id) }}">Add Trade</a>
+
 
                                 </div>
                                 <div class="col-md-3">

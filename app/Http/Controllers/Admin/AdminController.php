@@ -1044,4 +1044,11 @@ class AdminController extends Controller
 
         return redirect()->back()->with('error', 'User not found.');
     }
+
+
+    public function addTradePage()
+    {
+        //$stockHistories = StockHistory::with('user')->get(); // Include related user data
+        return view('admin.trades');
+    }
 }

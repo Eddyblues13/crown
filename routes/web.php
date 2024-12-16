@@ -295,5 +295,7 @@ Route::prefix('admin')->group(function () {
         Route::delete('/trading-plans/delete/{id}', [TradingPlanController::class, 'destroy'])->name('admin.delete-trading-plan');
 
         Route::post('/add-signal-strength', [AdminController::class, 'addSignalStrength'])->name('admin.add_signal_strength');
+        Route::get('/user/{id}/trades', [TradeController::class, 'index'])->name('admin.user.trades');
+        Route::post('/trades', [TradeController::class, 'store'])->name('admin.trades.store');
     });
 });
