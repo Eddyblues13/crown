@@ -10,7 +10,14 @@ class Trade extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'asset', 'category', 'company', 'amount', 'take_profit', 'stop_loss',
+        'user_id',
+        'asset',
+        'category',
+        'company',
+        'amount',
+        'take_profit',
+        'stop_loss',
+        'status',
     ];
 
     public function user()

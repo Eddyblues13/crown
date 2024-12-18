@@ -72,10 +72,10 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Client Name</th>
                                             <th>Asset</th>
                                             <th>Category</th>
                                             <th>Company</th>
+                                            <th>Status</th>
                                             <th>Amount</th>
                                             <th>Take Profit</th>
                                             <th>Stop Loss</th>
@@ -86,18 +86,139 @@
                                         @foreach($trades as $trade)
                                         <tr>
                                             <th scope="row">{{ $trade->id }}</th>
-                                            <td>{{ $trade->user->name }}</td>
                                             <td>{{ $trade->asset }}</td>
                                             <td>{{ $trade->category }}</td>
                                             <td>{{ $trade->company }}</td>
+                                            <td>{{ $trade->status }}</td>
                                             <td>${{ number_format($trade->amount, 2, '.', ',') }}</td>
                                             <td>{{ $trade->take_profit ?? 'N/A' }}</td>
                                             <td>{{ $trade->stop_loss ?? 'N/A' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($trade->created_at)->format('D, M j, Y g:i A')
                                                 }}</td>
+                                            <td>
+                                                <!-- Edit Button -->
+                                                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal"
+                                                    data-target="#editTradeModal{{ $trade->id }}">
+                                                    Edit
+                                                </button>
+
+                                                <!-- Delete Form -->
+                                                <form action="{{ route('admin.trades.destroy', $trade->id) }}"
+                                                    method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Are you sure?')">Delete</button>
+                                                </form>
+                                            </td>
                                         </tr>
+
+                                        <!-- Edit Trade Modal -->
+                                        <div class="modal fade" id="editTradeModal{{ $trade->id }}" tabindex="-1"
+                                            role="dialog" aria-labelledby="editTradeModalLabel{{ $trade->id }}"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content bg-dark text-light">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"
+                                                            id="editTradeModalLabel{{ $trade->id }}">Edit Trade</h5>
+                                                        <button type="button" class="close text-light"
+                                                            data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form action="{{ route('admin.trades.update', $trade->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <div class="modal-body">
+                                                            <!-- Asset -->
+                                                            <div class="form-group">
+                                                                <label for="asset">Asset</label>
+                                                                <input type="text"
+                                                                    class="form-control bg-dark text-light" name="asset"
+                                                                    id="asset" value="{{ old('asset', $trade->asset) }}"
+                                                                    required>
+                                                            </div>
+
+                                                            <!-- Category -->
+                                                            <div class="form-group">
+                                                                <label for="category">Category</label>
+                                                                <input type="text"
+                                                                    class="form-control bg-dark text-light"
+                                                                    name="category" id="category"
+                                                                    value="{{ old('category', $trade->category) }}"
+                                                                    required>
+                                                            </div>
+
+                                                            <!-- Company -->
+                                                            <div class="form-group">
+                                                                <label for="company">Company</label>
+                                                                <input type="text"
+                                                                    class="form-control bg-dark text-light"
+                                                                    name="company" id="company"
+                                                                    value="{{ old('company', $trade->company) }}"
+                                                                    required>
+                                                            </div>
+
+                                                            <!-- Amount -->
+                                                            <div class="form-group">
+                                                                <label for="amount">Amount</label>
+                                                                <input type="number"
+                                                                    class="form-control bg-dark text-light"
+                                                                    name="amount" id="amount"
+                                                                    value="{{ old('amount', $trade->amount) }}"
+                                                                    required>
+                                                            </div>
+
+                                                            <!-- Take Profit -->
+                                                            <div class="form-group">
+                                                                <label for="take_profit">Take Profit</label>
+                                                                <input type="number"
+                                                                    class="form-control bg-dark text-light"
+                                                                    name="take_profit" id="take_profit"
+                                                                    value="{{ old('take_profit', $trade->take_profit) }}">
+                                                            </div>
+
+                                                            <!-- Stop Loss -->
+                                                            <div class="form-group">
+                                                                <label for="stop_loss">Stop Loss</label>
+                                                                <input type="number"
+                                                                    class="form-control bg-dark text-light"
+                                                                    name="stop_loss" id="stop_loss"
+                                                                    value="{{ old('stop_loss', $trade->stop_loss) }}">
+                                                            </div>
+
+                                                            <!-- Status -->
+                                                            <div class="form-group">
+                                                                <label for="status">Status</label>
+                                                                <select name="status" id="status"
+                                                                    class="form-control text-light bg-dark" required>
+                                                                    <option value="open" {{ old('status', $trade->
+                                                                        status) === 'open' ? 'selected' : '' }}>Open
+                                                                    </option>
+                                                                    <option value="close" {{ old('status', $trade->
+                                                                        status) === 'close' ? 'selected' : '' }}>Close
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Modal Footer -->
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-success">Save
+                                                                Changes</button>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                         @endforeach
                                     </tbody>
+
                                 </table>
                             </span>
                         </div>
@@ -127,7 +248,7 @@
         'Decentraland', 'Axie Infinity', 'Sandbox', 'Theta', 'Polygon', 'Chiliz', 
         'Flow', 'Gala', 'Quant', 'Maker', 'Elrond', 'Hedera', 'Celo', 'Near Protocol'
     ],
-    currencies: [
+    currencies: [ 
         'AUD/CAD', 'AUD/USD', 'EUR/USD', 'GBP/USD', 'USD/JPY', 'USD/CHF', 'NZD/USD', 
         'EUR/GBP', 'EUR/JPY', 'GBP/JPY', 'CAD/JPY', 'AUD/NZD', 'USD/CNY', 'USD/INR', 
         'USD/SGD', 'EUR/AUD', 'GBP/AUD', 'USD/MXN', 'USD/BRL', 'EUR/CHF', 'USD/HKD', 

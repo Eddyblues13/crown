@@ -1,5 +1,7 @@
 @include('dashboard.header')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
 
 <style type="text/css">
   /* General Content Styling */
@@ -85,14 +87,14 @@
 
     <!-- Start Content-->
     <div class="container-fluid">
-   
+
       <div class="small-card card widget-flat my-4 kyc-warning">
 
         <p class="text-center">you have an important task left ! Verify your account to use all crown wave stock
           service <a class="btn btn-danger" href="{{ route('user.kyc.form') }}">Verify Account</a>
         </p>
       </div>
-  
+
 
       <!-- Trading Card -->
       <div class="small-card card widget-flat my-4">
@@ -313,6 +315,138 @@
                 }
         </script>
       </div>
+      <!-- Profile Tabs -->
+      <ul class="nav nav-tabs d-flex flex-sm-row justify-content-between mt-3">
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#closed">
+            <i class="bi bi-hourglass-top"></i> Closed
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" data-bs-toggle="tab" href="#active">
+            <i class="bi bi-hourglass"></i> Active
+          </a>
+        </li>
+      </ul>
+
+      <!-- Tab Content -->
+      <div class="tab-content mt-3">
+        <!-- Active Trades -->
+        <div class="tab-pane fade show active" id="active">
+          @if ($open_trades->isEmpty())
+          <div class="text-center py-4">
+            <p>No open trades available.</p>
+          </div>
+          @else
+          @foreach ($open_trades as $trade)
+          @php
+          // Capitalize company name
+          // Convert company name to uppercase
+          $companyName = strtoupper($trade->company);
+
+
+          // Determine logo URL dynamically
+          $logoBaseUrl = 'https://cryptologos.cc/logos/';
+          $logoPath = '';
+
+          // Check company type (crypto, stocks, or default)
+          if (in_array($companyName, ['Bitcoin', 'Ethereum', 'Ripple', 'Litecoin', 'Cardano', 'Dogecoin'])) {
+          // Replace spaces and lowercase for crypto logos
+          $logoPath = $logoBaseUrl . strtolower(str_replace(' ', '-', $companyName)) . '-logo.png';
+          } elseif (in_array($companyName, ['Amazon', 'Apple', 'Tesla', 'Microsoft', 'Google'])) {
+          // Use stock logos from external resources (example URL)
+          $logoPath = "https://logo.clearbit.com/" . strtolower($companyName) . ".com";
+          } else {
+          // Fallback placeholder
+          $logoPath = 'https://placehold.co/50x50?text=' . urlencode($companyName);
+          }
+          @endphp
+
+          <div class="trade-item d-flex justify-content-between align-items-center">
+            <div>
+              <img src="{{ $logoPath }}" alt="{{ $companyName }}" width="30"
+                onerror="this.src='https://placehold.co/50x50?text=NA'">
+              <span>BUY {{ number_format($trade->amount, 4) }} {{ $companyName }}</span><br>
+              <small>{{ $trade->asset }}</small>
+            </div>
+            <span class="text-success">${{ number_format($trade->take_profit, 2) }}</span>
+          </div>
+          @endforeach
+          @endif
+        </div>
+
+        <!-- Closed Trades -->
+        <div class="tab-pane fade" id="closed">
+          @if ($closed_trades->isEmpty())
+          <div class="text-center py-4">
+            <p>No closed trades available.</p>
+          </div>
+          @else
+          @foreach ($closed_trades as $trade)
+          @php
+          // Capitalize company name
+          // Convert company name to uppercase
+          $companyName = strtoupper($trade->company);
+
+          // Determine logo URL dynamically
+          $logoBaseUrl = 'https://cryptologos.cc/logos/';
+          $logoPath = '';
+
+          // Check company type (crypto, stocks, or default)
+          if (in_array($companyName, ['Bitcoin', 'Ethereum', 'Ripple', 'Litecoin', 'Cardano', 'Dogecoin'])) {
+          // Replace spaces and lowercase for crypto logos
+          $logoPath = $logoBaseUrl . strtolower(str_replace(' ', '-', $companyName)) . '-logo.png';
+          } elseif (in_array($companyName, ['Amazon', 'Apple', 'Tesla', 'Microsoft', 'Google'])) {
+          // Use stock logos from external resources (example URL)
+          $logoPath = "https://logo.clearbit.com/" . strtolower($companyName) . ".com";
+          } else {
+          // Fallback placeholder
+          $logoPath = 'https://placehold.co/50x50?text=' . urlencode($companyName);
+          }
+          @endphp
+
+          <div class="trade-item d-flex justify-content-between align-items-center">
+            <div>
+              <img src="{{ $logoPath }}" alt="{{ $companyName }}" width="30"
+                onerror="this.src='https://placehold.co/50x50?text=NA'">
+              <span>BUY {{ number_format($trade->amount, 4) }} {{ $companyName }}</span><br>
+              <small>{{ $trade->asset }}</small>
+            </div>
+            <span class="text-danger">${{ number_format($trade->take_profit, 2) }}</span>
+          </div>
+          @endforeach
+          @endif
+        </div>
+      </div>
+
+      <!-- Custom CSS -->
+      <style>
+        .trade-item {
+          border-bottom: 1px solid #ccc;
+          padding: 10px 0;
+        }
+
+        .text-success {
+          color: #00FF00;
+          font-weight: bold;
+        }
+
+        .text-danger {
+          color: #FF0000;
+          font-weight: bold;
+        }
+
+        small {
+          color: #999;
+        }
+
+        img {
+          border-radius: 50%;
+        }
+      </style>
+
+
+
 
     </div>
 

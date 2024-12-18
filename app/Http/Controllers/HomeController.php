@@ -84,6 +84,31 @@ class HomeController extends Controller
 
 
 
+
+
+
+
+
+        // Fetch all trades associated with the user
+
+        $data['trades']  = Trade::with('user')->where('user_id', Auth::id())->get();
+
+        $data['open_trades'] = Trade::with('user')
+            ->where('user_id', Auth::id())
+            ->where('status', 'open')
+            ->get();
+
+        $data['closed_trades'] = Trade::with('user')
+            ->where('user_id', Auth::id())
+            ->where('status', 'close')
+            ->get();
+
+
+
+
+
+
+
         return view('dashboard.home', $data);
     }
 

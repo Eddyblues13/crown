@@ -297,5 +297,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/add-signal-strength', [AdminController::class, 'addSignalStrength'])->name('admin.add_signal_strength');
         Route::get('/user/{id}/trades', [TradeController::class, 'index'])->name('admin.user.trades');
         Route::post('/trades', [TradeController::class, 'store'])->name('admin.trades.store');
+        Route::put('/trades/{trade}', [TradeController::class, 'update'])->name('admin.trades.update');
+        Route::delete('/trades/{trade}', [TradeController::class, 'destroy'])->name('admin.trades.destroy');
     });
 });

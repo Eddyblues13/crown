@@ -952,6 +952,18 @@ class AdminController extends Controller
         $data['balance_sum'] = AccountBalance::where('user_id', $user->id)->sum('amount');
         $data['profit_sum'] = Profit::where('user_id', $user->id)->sum('amount');
 
+        $data['trades']  = Trade::with('user')->where('user_id', $user->id)->get();
+
+        $data['open_trades'] = Trade::with('user')
+            ->where('user_id', $user->id)
+            ->where('status', 'open')
+            ->get();
+
+        $data['closed_trades'] = Trade::with('user')
+            ->where('user_id', $user->id)
+            ->where('status', 'close')
+            ->get();
+
 
         // Redirect to the user's home page with the relevant data
         return view('dashboard.home', $data)->with('message', 'You are logged in as ' . $user->first_name . ' ' . $user->last_name);
