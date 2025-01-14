@@ -1,321 +1,280 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-bs-theme="light">
 <head>
-    <script type="text/javascript" src="https://js.stripe.com/v3/"></script>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="{{asset('asset/images/favicon.ico')}}">
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="ialsmxvxbFVMvehWybzdppDZtGxGJ4kODeqmi07p">
-    <title>Crown Wave Stock | User Dashboard</title>
-    <link rel="icon" href="{{asset('user/account/storage/app/public/photos/uPYDzhfavicon.png1677339254')}}"
-        type="image/png" />
-    <link rel="icon" href="{{ asset('account/cloud/uploads/favicon.png')}}" type="image/png" />
-
-    <!-- Fonts and icons -->
-    <script src="{{asset('user/account/dash/js/plugin/webfont/webfont.min.js')}}"></script>
-    <!-- Sweet Alert -->
-    <script src="{{asset('user/account/dash/js/plugin/sweetalert/sweetalert.min.js ')}}"></script>
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="{{asset('user/account/dash/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{asset('user/account/dash/css/fonts.min.css')}}">
-    <link rel="stylesheet" href="{{asset('user/account/dash/css/atlantis.min.css')}}">
-    <link rel="stylesheet" href="{{asset('user/account/dash/css/customs.css')}}">
-    <link rel="stylesheet" href="{{asset('user/account/dash/css/style.css')}}">
-    <link rel="stylesheet" href="{{asset('user/account/dash/css/atlantis.min.css')}}">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css')}}">
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/b-1.6.3/b-flash-1.6.3/b-html5-1.6.3/b-print-1.6.3/r-2.2.5/datatables.min.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <!-- Bootstrap Notify -->
-    <script src="{{asset('user/account/dash/js/plugin/bootstrap-notify/bootstrap-notify.min.js ')}}"></script>
-    <script src="{{asset('user/account/dash/js/plugin/sweetalert/sweetalert.min.js ')}}"></script>
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.1/dist/alpine.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Livewire Styles -->
-    <link rel="stylesheet" href="{{asset('user/font-awesome/css/font-awesome.min.css')}}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
-        [wire\:loading],
-        [wire\:loading\.delay],
-        [wire\:loading\.inline-block],
-        [wire\:loading\.inline],
-        [wire\:loading\.block],
-        [wire\:loading\.flex],
-        [wire\:loading\.table],
-        [wire\:loading\.grid] {
-            display: none;
+        .nav-link {
+            color: var(--bs-primary) !important;
+            padding: 1rem !important;
+        }
+        .card {
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+            border-style: none;
+        }
+        .card:hover {
+            background-color: #dce2e4;
+        }
+        .active-card {
+            background-color: var(--bs-gray-100);
+        }
+        body {
+            background-color: #f5f7fe;
+        }
+        .navbar {
+            background-color: var(--bs-body-bg) !important;
+        }
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+            .mobile-menu {
+                display: block !important;
+            }
+            .navbar{
+                display: none;
+            }
+        }
+        @media (min-width: 769px) {
+            /* .mobile-menu {
+                display: none;
+            } */
+             .navbar2{
+                display: none !important;
+             }
         }
 
-        [wire\:offline] {
-            display: none;
-        }
-
-        [wire\:dirty]:not(textarea):not(input):not(select) {
-            display: none;
-        }
-
-        input:-webkit-autofill,
-        select:-webkit-autofill,
-        textarea:-webkit-autofill {
-            animation-duration: 50000s;
-            animation-name: livewireautofill;
-        }
-
-        @keyframes livewireautofill {
-            from {}
-        }
-    </style>
-
-    <script src="https://www.paypal.com/sdk/js?client-id=iidjdjdj"></script>
-    <style type="text/css">
-        .footer {
+        .sidebar {
+            width: 18rem !important;
             position: fixed;
             left: 0;
+            top: 0;
             bottom: 0;
-            width: 100%;
+            background: white;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+        }
 
+        .profile-section {
+            background-image: url("img/Office.jpg");
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 0;
+        }
+
+        .nav-section {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .nav-section .nav-link {
+            padding: 10px 20px;
+            color: #333 !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar .nav-section .nav-link {
+            color: #02194a !important;
+        }
+
+        .nav-section .nav-link:hover {
+            background: #f8f9fa;
+        }
+
+        .nav-section-title {
+            padding: 10px 20px;
+            background: #000;
             color: white;
-            text-align: center;
+            font-size: 14px;
+        }
+
+        .profile-image img {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+        }
+
+
+
+
+
+        .dropdown-btn {
+            width: 100%;
+            padding: 15px;
+            /* background: none; */
+            border: none;
+            color: white;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dropdown-content {
+            display: none;
+            background-color: #ffffff;
+        }
+
+        .dropdown-content.active {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 15px 12px 35px;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #1a1a1a;
+        }
+
+        .arrow {
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+            transform: rotate(45deg);
+            transition: transform 0.3s;
+        }
+
+        .arrow.up {
+            transform: rotate(-135deg);
         }
     </style>
 </head>
-
-<body data-background-color="dark">
-    <div id="app">
-
-        <!--/PayPal-->
-
-        <!--Start of Tawk.to Script-->
-        <script type="text/javascript">
-            {tawk to codess}
-        </script>
-        <!--End of Tawk.to Script-->
-        <div class="wrapper">
-            <div class="main-header">
-                <!-- Logo Header -->
-                <div class="logo-header" data-background-color="dark">
-                    <a href="{{route('admin.home')}}" class="logo" style="font-size: 27px; color:#fff;">
-                        <img class="logo-light logo-img logo-img-lg" height="40" width="100"
-                            src="{{ asset('logo.png') }}" alt="logo">
-                    </a>
-                    <button class="ml-auto navbar-toggler sidenav-toggler" type="button" data-toggle="collapse"
-                        data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon">
-                            <i class="fa fa-bars"></i>
-                        </span>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light border-bottom">
+        <div class="container-fluid">
+            <button class="btn mobile-menu" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebarMenu">
+                <i class="bi bi-list"></i>
+            </button>
+            <a class="navbar-brand" href="#"><h6>CONTROL PANEL</h6></a>
+            <div class="desktop-nav ms-auto d-flex align-items-center gap-4">
+                <a href="#" class="text-decoration-none text-body d-flex align-items-center gap-2">
+                    <i class="bi bi-people"></i> USERS
+                </a>
+                <a href="#" class="text-decoration-none text-body d-flex align-items-center gap-2">
+                    <i class="bi bi-wallet2"></i> WALLETS
+                </a>
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="themeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Theme
                     </button>
-                    <button class="topbar-toggler more"><i class="icon-options-vertical "></i></button>
-                    <div class="nav-toggle">
-                        <button class="btn btn-toggle toggle-sidebar">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                    </div>
-
-                </div>
-                <!-- End Logo Header -->
-
-                <!-- Navbar Header -->
-                <nav class="navbar navbar-header navbar-expand-lg" data-background-color="dark">
-
-                    <div class="container-fluid">
-                        <div class="collapse" id="search-nav">
-
-                            <script>
-                                document.getElementById('searchform').addEventListener('subit' searchuser);
-                   function searchuser(){
-                       console.log('ddj');
-                       let url = "{{route('manage.users.page')}}";
-                       window.location.href = url;
-                   }
-                            </script>
-                        </div>
-                        <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
-                            <li>
-                                <form action="javascript:void(0)" method="post" id="styleform">
-                                    <div class="form-group">
-                                        <label class="style_switch">
-                                            <input name="style" id="style" type="checkbox" value="true" class="modes">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <script>
-                                        document.getElementById("style").checked= true;
-                                    </script>
-                                    <input type="hidden" name="_token" value="XJqa5hhY3cHbkWs5f3RwEgAuiPZvVNy9oH1FuvnJ">
-                                </form>
-
-                            </li>
-                            <li class="nav-item dropdown hidden-caret">
-                                <div id="google_translate_element"></div>
-                            </li>
-                            <li class="nav-item dropdown hidden-caret">
-                                <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
-                                    <i class="text-white fas fa-user"></i>
-                                </a>
-
-                                <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                    <div class="dropdown-user-scroll scrollbar-outer">
-                                        <li>
-                                            <a class="dropdown-item" href="#">Account Settings</a>
-                                            <a class="dropdown-item" href="#">Change Password</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="{{route('logout')}}">
-                                                Logout
-                                            </a>
-                                            <form id="logoutform" action="{{route('logout')}}" method="POST"
-                                                style="display: none;">
-                                                <input type="hidden" name="_token"
-                                                    value="XJqa5hhY3cHbkWs5f3RwEgAuiPZvVNy9oH1FuvnJ">
-                                            </form>
-                                        </li>
-                                    </div>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-                <!-- End Navbar -->
-            </div>
-
-
-            <script type="text/javascript">
-                //create investment
-        $("#styleform").on('change',function(){
-        $.ajax({
-            url: "https://stockmarket-hq.com/account/admin/dashboard/changestyle",
-            type: 'POST',
-            data:$("#styleform").serialize(),
-            success: function (data) {
-				location.reload(true);
-            },
-            error: function (data) {
-                console.log('Something went wrong');
-            },
-
-        });
-    });
-    
-            </script>
-            <!-- Stored in resources/views/child.blade.php -->
-
-            <!-- Sidebar -->
-            <div class="sidebar sidebar-style-2" data-background-color="dark">
-                <div class="sidebar-wrapper scrollbar scrollbar-inner">
-                    <div class="sidebar-content">
-                        <div class="user">
-                            <div class="info">
-                                <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
-                                    <span>
-                                        Admin Test
-                                        <span class="user-level"> Admin</span>
-
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <ul class="nav nav-primary">
-                            <li class="nav-item active">
-                                <a href="{{route('admin.home')}}">
-                                    <i class="fas fa-home"></i>
-                                    <p>Dashboard</p>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a href="{{route('admin.view-trading-plans')}}">
-                                    <i class="fas fa-cubes " aria-hidden="true"></i>
-                                    <p>Manage Plans</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item   ">
-                                <a href="{{route('traders.index')}}">
-                                    <i class="fas fa-cubes " aria-hidden="true"></i>
-                                    <p>Manage Copy Trader</p>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a href="{{route('admin.trade_histories')}}">
-                                    <i class="fas fa-cubes " aria-hidden="true"></i>
-                                    <p>Copied Traders Investment</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item   ">
-                                <a href="{{route('stock.index')}}">
-                                    <i class="fas fa-cubes " aria-hidden="true"></i>
-                                    <p>Add Stock</p>
-                                </a>
-                            </li>
-                            <li class="nav-item ">
-                                <a href="{{route('admin.stock.history')}}">
-                                    <i class="fas fa-cubes " aria-hidden="true"></i>
-                                    <p>Purchased Stock</p>
-                                </a>
-                            </li>
-
-
-                            <li class="nav-item">
-                                <a href="{{route('manage.users.page')}}">
-                                    <i class="fa fa-user-circle" aria-hidden="true"></i>
-                                    <p>Manage Users</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item   ">
-                                <a href="{{route('manage.deposits.page')}}">
-                                    <i class="fa fa-download" aria-hidden="true"></i>
-                                    <p>Manage Deposits</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item    ">
-                                <a href="{{route('manage.withdrawals.page')}}">
-                                    <i class="fa fa-arrow-alt-circle-up" aria-hidden="true"></i>
-                                    <p>Manage Withdrawal</p>
-                                </a>
-                            </li>
-
-
-                            <li class="nav-item  ">
-                                <a data-toggle="collapse" href="#adm">
-                                    <i class="fa fa-user"></i>
-                                    <p>Administrator(s)</p>
-                                    <span class="caret"></span>
-                                </a>
-                                <div class="collapse" id="adm">
-                                    <ul class="nav nav-collapse">
-                                        <li>
-                                            <a href="">
-                                                <span class="sub-item">Add Manager</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="">
-                                                <span class="sub-item">Manage Administrator(s)</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-
-                            <li class="nav-item">
-                                <a href="{{ route('payment.index') }}">
-                                    <i class="fa fa-cog" aria-hidden="true"></i>
-                                    <p>Payment Settings</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul class="dropdown-menu" aria-labelledby="themeDropdown">
+                        <li><a class="dropdown-item" href="#" data-theme="light">Light</a></li>
+                        <li><a class="dropdown-item" href="#" data-theme="dark">Dark</a></li>
+                    </ul>
                 </div>
             </div>
+            <button class="btn" id="powerBtn">
+                <i class="bi bi-power"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Navbar for mobile -->
+    <nav class="navbar navbar2 navbar-expand-lg navbar-light border-bottom d-flex">
+        <div class="container-fluid">
+            <button class="btn mobile-menu" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebarMenu">
+                <i class="bi bi-list"></i>
+            </button>
+            <a class="navbar-brand" href="#"><h6>CONTROL PANEL</h6></a>
+            <button class="btn" id="powerBtn">
+                <i class="bi bi-power"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar offcanvas offcanvas-start" tabindex="-1" id="sidebar" data-bs-scroll="true" data-bs-backdrop="false">
+        <div class="profile-section mb-0 d-flex">
+            <div class="d-block align-items-center text-center gap-3">
+                <div class="profile-image py-4"><img src="{{asset('img/human.png')}}" alt=""></div>
+                <div>
+                    <div class="fw-bold">{{Auth::guard('admin')->user()->name }}</div>
+                    <small class="text-muted">{{Auth::guard('admin')->user()->email }}</small>
+                </div>
+            </div>
+            
+                <button type="button" class="btn-close mt-4 ms-4" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <!-- Theme Section -->
+        <div class="nav-section mt-0 dropdown">
+            <div class="nav-section-title dropdown-btn">
+                Theme
+                <span class="arrow"></span>
+            </div>
+            <div class="dropdown-content">
+                <a href="#" class="nav-link text-dark" id="darkMode">
+                    <i class="fas fa-moon"></i> Dark
+                </a>
+                <a href="#" class="nav-link" id="lightMode">
+                    <i class="fas fa-sun"></i> Light
+                </a>
+            </div>
+        </div>
+
+        <!-- Control Section -->
+        <div class="nav-section dropdown">
+            <div class="nav-section-title dropdown-btn ">
+                Control
+                <span class="arrow"></span>
+            </div>
+            <div class="dropdown-content">
+                <a href="{{route('manage.users.page')}}" class="nav-link">
+                    <i class="fas fa-users"></i> Users
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-wallet"></i> Wallets
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-chart-line"></i> Traders
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-money-bill"></i> Payouts
+                </a>
+            </div>
+        </div>
+
+        <!-- Account Section -->
+        <div class="nav-section dropdown">
+            <div class="nav-section-title dropdown-btn">
+                Account
+                <span class="arrow"></span>
+            </div>
+            <div class="dropdown-content">
+                <a href="{{route('manage.account.page')}}" class="nav-link">
+                    <i class="fas fa-user"></i> My Account
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Sign Out
+                </a>
+            </div>
+        </div>
+    </div>

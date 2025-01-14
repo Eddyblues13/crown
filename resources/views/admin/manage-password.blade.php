@@ -1,38 +1,37 @@
 @include('admin.header')
 
+
+
     <!-- Main Content -->
-    <div class="container py-4">
-      <h6 class="mb-4 fs-5"><small><a href="#" class="text-decoration-none">Control Panel</a> > Users</small></h6>
+    <div class="container py-5">
+      <h6 class="mb-4 fs-5"><small><a href="home.html" class="text-decoration-none">Control Panel</a> > <a href="account.html" class="text-decoration-none">My Account</a> > Change Password</small></h6>
 
-      <form>
-        <div class="mb-3">
-          <input type="text" class="form-control search" id="search" placeholder="Search">
-        </div>
-      </form>
+      <div class="menu-items bg-white px-5 py-4 forget-pass">
 
-
-      <div class="menu-items">
-          <div class="card mb-3 active-card d-flex justify-content-between">
-			@foreach($users as $user)
-              <div class="nav-link d-flex gap-2">
-                  <img src="{{asset('img/camera.png')}}" class="rounded-circle" width="35" height="35"></img>
-                  <div class="info px-3 text-muted">
-                   <a href="{{ route('admin.user.view', $user->id) }}" id="{{ $user->id }}"> <p class="fw-bold">{{ $user->name }}</p></a>
-                    <p>{{ $user->country }}</p>
-                    <p>0 Pending Deposits</p>
-                    <p>0 Pending Withdrawals</p>
-                  </div>
-                  <div class="delete ms-auto px-2"><a href="#"><i class="fa fa-trash text-danger"></i></a></div>   
-              </div>   
+        <form>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password">
           </div>
-        </div>
-		@endforeach
 
-        
-        
-    </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">New Password</label>
+            <input type="password" class="form-control" id="password">
+          </div>
 
+          <div class="mb-3">
+            <label for="password" class="form-label">Confirm Pasword</label>
+            <input type="password" class="form-control" id="password">
+          </div>
     
+          <button type="submit" class="btn btn-primary w-100">Update</button>
+        </form>
+    
+        
+      </div>
+          
+
+      </div>
   </div>
 
     <!-- Bootstrap Icons -->
@@ -90,5 +89,3 @@
     </script>
 </body>
 </html>
-
-	
