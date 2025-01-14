@@ -175,6 +175,21 @@
           box-shadow: none;
           border-color: #4a4a4a
         }
+        .forget-pass input:focus {
+          outline: none;
+          box-shadow: none;
+        }
+        .forget-pass select:focus{
+          outline: none;
+          box-shadow: none;
+        }
+        .forget-pass button:hover{
+          background-color: #26a69a;
+          border-style: none;
+        }
+        label{
+          font-size: 10px;
+        }
     </style>
 </head>
 <body>
@@ -184,12 +199,12 @@
             <button class="btn mobile-menu" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebarMenu">
                 <i class="bi bi-list"></i>
             </button>
-            <a class="navbar-brand" href="#"><h6>CONTROL PANEL</h6></a>
+            <a class="navbar-brand" href="home.html"><h6>CONTROL PANEL</h6></a>
             <div class="desktop-nav ms-auto d-flex align-items-center gap-4">
-                <a href="#" class="text-decoration-none text-body d-flex align-items-center gap-2">
+                <a href="users.html" class="text-decoration-none text-body d-flex align-items-center gap-2">
                     <i class="bi bi-people"></i> USERS
                 </a>
-                <a href="#" class="text-decoration-none text-body d-flex align-items-center gap-2">
+                <a href="wallet.html" class="text-decoration-none text-body d-flex align-items-center gap-2">
                     <i class="bi bi-wallet2"></i> WALLETS
                 </a>
                 <div class="dropdown">
@@ -214,7 +229,7 @@
             <button class="btn mobile-menu" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebarMenu">
                 <i class="bi bi-list"></i>
             </button>
-            <a class="navbar-brand" href="#"><h6>CONTROL PANEL</h6></a>
+            <a class="navbar-brand" href="home.html"><h6>CONTROL PANEL</h6></a>
             <button class="btn" id="powerBtn">
                 <i class="bi bi-power"></i>
             </button>
@@ -258,16 +273,16 @@
                 <span class="arrow"></span>
             </div>
             <div class="dropdown-content">
-                <a href="#" class="nav-link">
+                <a href="users.html" class="nav-link">
                     <i class="fas fa-users"></i> Users
                 </a>
-                <a href="#" class="nav-link">
+                <a href="wallet.html" class="nav-link">
                     <i class="fas fa-wallet"></i> Wallets
                 </a>
-                <a href="#" class="nav-link">
+                <a href="traders.html" class="nav-link">
                     <i class="fas fa-chart-line"></i> Traders
                 </a>
-                <a href="#" class="nav-link">
+                <a href="payouts.html" class="nav-link">
                     <i class="fas fa-money-bill"></i> Payouts
                 </a>
             </div>
@@ -280,7 +295,7 @@
                 <span class="arrow"></span>
             </div>
             <div class="dropdown-content">
-                <a href="#" class="nav-link">
+                <a href="account.html" class="nav-link">
                     <i class="fas fa-user"></i> My Account
                 </a>
                 <a href="#" class="nav-link">
@@ -290,34 +305,68 @@
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="container py-4">
-      <h6 class="mb-4 fs-5"><small><a href="#" class="text-decoration-none">Control Panel</a> > Users</small></h6>
+     <!-- Main Content -->
+     <div class="container py-5">
+      <h6 class="mb-4 fs-5"><small><a href="home.html" class="text-decoration-none">Control Panel</a> > <a href="traders.html" class="text-decoration-none">Traders</a> > Update Lyxe</small></h6>
+      <div class="menu-items bg-white px-5 py-4 forget-pass">
 
-      <form>
-        <div class="mb-3">
-          <input type="text" class="form-control search" id="search" placeholder="Search">
-        </div>
-      </form>
+        <div class="row">
+          <div class="col-md-6">
+            <form>
+              <div class="mb-3">
+                <label for="name" class="form-label text-muted">Name</label>
+                <input type="text" class="form-control" id="name" value="Lyxe">
+              </div>
+    
+              <div class="mb-3">
+                <label for="name" class="form-label text-muted">Price (Bot Only)</label>
+                <input type="text" class="form-control" id="price" value="0.00">
+              </div>
+    
+              <div class="mb-3">
+                <label for="name" class="form-label text-muted">Win Rate</label>
+                <input type="text" class="form-control" id="name" value="92">
+              </div>
+    
+              <div class="mb-3">
+                <label for="profit" class="form-label text-muted">Profit Share</label>
+                <input type="text" class="form-control" id="profit" value="20">
+              </div>
+    
+              <div class="mb-3">
+                <label for="type" class="form-label text-muted">Type</label>
+                <select class="form-select">
+                  <option value="human">Human</option>
+                  <option value="human">Bot</option>
+                </select>
+              </div>
+    
+              <div class="mb-3">
+                <label for="type" class="form-label text-muted">Description</label>
+                <textarea class="form-control">Follow my trades using this recommended platform You can earn good profits from my trades using this copy trade feature to automatically copy all my daily trades automatically
+                </textarea>
+              </div>
+    
+              <button type="submit" class="btn btn-primary w-100">Submit</button>
+            </form>
+          </div>
 
+          <div class="col-md-6">
+            <form>
+              <div class="mb-3">
+                <label for="profit" class="form-label text-muted">Choose file</label>
+                <input type="file" class="form-control" id="imageUpload"accept="image/*">
+              </div>
 
-        <div class="menu-items">
-          <div class="card mb-3 active-card d-flex justify-content-between">
-              <div class="nav-link d-flex gap-2">
-                  <img src="img/camera.png" class="rounded-circle" width="35" height="35"></img>
-                  <div class="info px-3 text-muted">
-                    <a href="profile.html" class="fw-bold text-decoration-none text-dark">Benson Christopher</a>
-                    <p>Nigeria</p>
-                    <p>0 Pending Deposits</p>
-                    <p>0 Pending Withdrawals</p>
-                  </div>
-                  <div class="delete ms-auto px-2"><a href="#"><i class="fa fa-trash text-danger"></i></a></div>   
-              </div>   
+              <button type="submit" class="btn btn-primary w-100">Update Photo</button>
+            </form>
           </div>
         </div>
-        
-    </div>
+      </div>
+          
 
+      </div>
+  </div>
 
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">

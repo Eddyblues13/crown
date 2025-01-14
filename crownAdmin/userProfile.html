@@ -15,16 +15,13 @@
             padding: 1rem !important;
         }
         .card {
-            border-radius: 0.5rem;
+            border-radius: 1rem;
             transition: background-color 0.3s;
             border-style: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
         }
-        .card:hover {
-            background-color: #dce2e4;
-        }
-        .active-card {
-            background-color: var(--bs-gray-100);
-        }
+        
         body {
             background-color: #f5f7fe;
         }
@@ -175,6 +172,9 @@
           box-shadow: none;
           border-color: #4a4a4a
         }
+        a{
+          text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -292,27 +292,45 @@
 
     <!-- Main Content -->
     <div class="container py-4">
-      <h6 class="mb-4 fs-5"><small><a href="#" class="text-decoration-none">Control Panel</a> > Users</small></h6>
-
-      <form>
-        <div class="mb-3">
-          <input type="text" class="form-control search" id="search" placeholder="Search">
-        </div>
-      </form>
-
+      <h6 class="mb-4 fs-5"><small><a href="#" class="text-decoration-none">Control Panel</a> > <a href="users.html">Users</a> > Christopher</small></h6>
 
         <div class="menu-items">
-          <div class="card mb-3 active-card d-flex justify-content-between">
-              <div class="nav-link d-flex gap-2">
-                  <img src="img/camera.png" class="rounded-circle" width="35" height="35"></img>
-                  <div class="info px-3 text-muted">
-                    <a href="profile.html" class="fw-bold text-decoration-none text-dark">Benson Christopher</a>
-                    <p>Nigeria</p>
-                    <p>0 Pending Deposits</p>
-                    <p>0 Pending Withdrawals</p>
+          <div class="card mb-3 d-flex justify-content-between">
+            <div class="row">
+              <div class="col-md-6 mx-auto">
+                <div class="text-center">
+                  <img src="img/camera.png" class="rounded-circle mt-4" width="143" height="143"></img>
+                  <div class="pb-3 pt-2"><a href="">Bots</a></div>
+                  <div class="py-3"><a href="">Profile</a></div>
+                  <div class="py-3"><a href="">Trades</a></div> 
+                  <div class="py-3"><a href="">Deposits</a></div> 
+                  <div class="py-3"><a href="">Contracts</a></div> 
+                  <div class="py-3"><a href="">Withdrawals</a></div> 
+                  <div class="py-3"><a href="">Send Push</a></div> 
+                  <div class="py-3"><a href="">Send Email</a></div> 
+                </div>
+              </div>
+              <div class="col-md-6 ">
+                <div class="row bg-light py-5">
+                  <div class="col-md-6">
+                    TRADING BALANCE
                   </div>
-                  <div class="delete ms-auto px-2"><a href="#"><i class="fa fa-trash text-danger"></i></a></div>   
-              </div>   
+                  <div class="col-md-6">
+                    $0.00
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    SIGNAL STRENGTH
+                  </div>
+                  <div class="col-md-6">
+                    1
+                  </div>
+                </div>
+
+              </div>
+            </div> 
           </div>
         </div>
         
