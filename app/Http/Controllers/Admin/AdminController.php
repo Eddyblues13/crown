@@ -74,6 +74,52 @@ class AdminController extends Controller
     }
 
 
+    public function managePlans()
+    {
+        $data['users'] = User::select('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
+            ->leftJoin('account_balances', 'users.id', '=', 'account_balances.user_id')
+            ->leftJoin('profits', 'users.id', '=', 'profits.user_id')
+            ->groupBy('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
+            ->selectRaw('SUM(account_balances.amount) as balance_sum, SUM(profits.amount) as profit_sum')
+            ->get();
+
+
+        return view('admin.manage-plans', $data);
+    }
+
+
+
+    public function manageAccount()
+    {
+        $data['users'] = User::select('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
+            ->leftJoin('account_balances', 'users.id', '=', 'account_balances.user_id')
+            ->leftJoin('profits', 'users.id', '=', 'profits.user_id')
+            ->groupBy('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
+            ->selectRaw('SUM(account_balances.amount) as balance_sum, SUM(profits.amount) as profit_sum')
+            ->get();
+
+
+        return view('admin.manage-account', $data);
+    }
+
+
+    public function managePassword()
+    {
+        $data['users'] = User::select('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
+            ->leftJoin('account_balances', 'users.id', '=', 'account_balances.user_id')
+            ->leftJoin('profits', 'users.id', '=', 'profits.user_id')
+            ->groupBy('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
+            ->selectRaw('SUM(account_balances.amount) as balance_sum, SUM(profits.amount) as profit_sum')
+            ->get();
+
+
+        return view('admin.manage-password', $data);
+    }
+
+
+
+
+
     public function manageDepositsPage()
     {
 

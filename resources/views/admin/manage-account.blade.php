@@ -1,36 +1,20 @@
 @include('admin.header')
-
     <!-- Main Content -->
     <div class="container py-4">
-      <h6 class="mb-4 fs-5"><small><a href="#" class="text-decoration-none">Control Panel</a> > Users</small></h6>
-
-      <form>
-        <div class="mb-3">
-          <input type="text" class="form-control search" id="search" placeholder="Search">
-        </div>
-      </form>
-
+      <h6 class="mb-4 fs-5"><small><a href="#" class="text-decoration-none">Control Panel</a> > My Account</small></h6>
 
       <div class="menu-items">
-          <div class="card mb-3 active-card d-flex justify-content-between">
-			@foreach($users as $user)
-              <div class="nav-link d-flex gap-2">
-                  <img src="{{asset('img/camera.png')}}" class="rounded-circle" width="35" height="35"></img>
-                  <div class="info px-3 text-muted">
-                   <a href="{{ route('admin.user.view', $user->id) }}" id="{{ $user->id }}"> <p class="fw-bold">{{ $user->name }}</p></a>
-                    <p>{{ $user->country }}</p>
-                    <p>0 Pending Deposits</p>
-                    <p>0 Pending Withdrawals</p>
-                  </div>
-                  <div class="delete ms-auto px-2"><a href="#"><i class="fa fa-trash text-danger"></i></a></div>   
-              </div>   
-          </div>
+        <div class="card mb-3 active-card d-flex justify-content-center">
+          <a href="{{route('manage.password.page')}}" class="text-decoration-none">
+            <div class="nav-link d-flex align-items-center gap-2">
+              <p><i class="fa-solid fa-user"></i></p> 
+               <p class="fw-bold px-5">Change Password</p>   
+             </div> 
+          </a>  
         </div>
-		@endforeach
+          
 
-        
-        
-    </div>
+      </div>
 
     
   </div>
@@ -90,5 +74,3 @@
     </script>
 </body>
 </html>
-
-	
