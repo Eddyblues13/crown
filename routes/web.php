@@ -179,6 +179,8 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/home', [AdminController::class, 'index'])->name('admin.home');
         Route::get('/manage-users', [AdminController::class, 'manageUsersPage'])->name('manage.users.page');
+        Route::get('/manage-action', [AdminController::class, 'manageActionPage'])->name('manage.action.page');
+        Route::get('/create-action', [AdminController::class, 'CreateAction'])->name('create.action');
         Route::get('/manage-plans', [AdminController::class, 'managePlans'])->name('manage.plans.page');
         Route::get('/manage-account', [AdminController::class, 'manageAccount'])->name('manage.account.page');
         Route::get('/manage-password', [AdminController::class, 'managePassword'])->name('manage.password.page');

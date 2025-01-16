@@ -11,7 +11,24 @@
                     @csrf
                     @method('PUT')
                     <div class="form-row">
-                        @include('admin.payment_settings._form', ['payment' => $payment])
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Wallet Address</label>
+                            <input type="text" class="form-control" id="address" name="wallet_address" value="">
+                          </div>
+                
+                          <div class="mb-3">
+                            <label for="walletType" class="form-label">Select Wallet Type</label>
+                            <select  name="wallet_type" class="form-select" id="walletType">
+                              <option value="bitcoin">Bitcoin Wallet</option>
+                              <option value="ethereum">Ethereum Wallet</option>
+                              <option value="dogecoin">Dogecoin Wallet</option>
+                            </select>
+                          </div>
+                
+                          <div class="mb-3">
+                            <label for="network" class="form-label">Network</label>
+                            <input type="text" class="form-control" name="wallet_network" id="network" value="">
+                          </div>
                         <div class="form-group col-md-12">
                             <button type="submit" class="btn btn-primary">Update Method</button>
                         </div>

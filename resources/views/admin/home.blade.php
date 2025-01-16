@@ -16,19 +16,19 @@
                 </a>
             </div>
             <div class="card mb-2 py-3">
-                <a href="#" class="nav-link d-flex align-items-center gap-2">
+                <a href="{{ route('traders.index') }}" class="nav-link d-flex align-items-center gap-2">
                     <i class="bi bi-people-fill text-dark fs-5"></i>
                     <span class="">TRADERS</span>
                 </a>
             </div>
             <div class="card mb-2 py-3">
-                <a href="#" class="nav-link d-flex align-items-center gap-2">
+                <a href="{{ route('payment.index') }}" class="nav-link d-flex align-items-center gap-2">
                     <i class="bi bi-wallet2 text-dark fs-5"></i>
                     <span class="">WALLETS</span>
                 </a>
             </div>
             <div class="card mb-2 py-3">
-                <a href="#" class="nav-link d-flex align-items-center gap-2">
+                <a href="{{route('manage.action.page')}}" class="nav-link d-flex align-items-center gap-2">
                     <i class="bi bi-bell text-dark fs-5"></i>
                     <span class="">ACTIONS</span>
                 </a>

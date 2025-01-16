@@ -74,6 +74,36 @@ class AdminController extends Controller
     }
 
 
+    public function manageActionPage()
+    {
+        $data['users'] = User::select('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
+            ->leftJoin('account_balances', 'users.id', '=', 'account_balances.user_id')
+            ->leftJoin('profits', 'users.id', '=', 'profits.user_id')
+            ->groupBy('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
+            ->selectRaw('SUM(account_balances.amount) as balance_sum, SUM(profits.amount) as profit_sum')
+            ->get();
+
+
+        return view('admin.manage_action', $data);
+    }
+
+    public function CreateAction()
+    {
+        $data['users'] = User::select('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
+            ->leftJoin('account_balances', 'users.id', '=', 'account_balances.user_id')
+            ->leftJoin('profits', 'users.id', '=', 'profits.user_id')
+            ->groupBy('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
+            ->selectRaw('SUM(account_balances.amount) as balance_sum, SUM(profits.amount) as profit_sum')
+            ->get();
+
+
+        return view('admin.create_action', $data);
+    }
+
+
+
+
+
     public function managePlans()
     {
         $data['users'] = User::select('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')

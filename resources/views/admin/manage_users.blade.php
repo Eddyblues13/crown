@@ -22,7 +22,7 @@
                     <p>0 Pending Deposits</p>
                     <p>0 Pending Withdrawals</p>
                   </div>
-                  <div class="delete ms-auto px-2"><a href="#"><i class="fa fa-trash text-danger"></i></a></div>   
+                  <div class="delete ms-auto px-2"><a href="{{ route('delete.user', $user->id) }}"><i class="fa fa-trash text-danger"></i></a></div>   
               </div>   
           </div>
         </div>
