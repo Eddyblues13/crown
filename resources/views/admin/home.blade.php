@@ -10,7 +10,7 @@
                 </a>
             </div>
             <div class="card mb-2 py-3">
-                <a href="{{route('manage.plans.page')}}" class="nav-link d-flex align-items-center gap-2">
+                <a href="{{route('admin.view-trading-plans')}}" class="nav-link d-flex align-items-center gap-2">
                     <i class="bi bi-currency-dollar text-dark fs-5"></i>
                     <span class="">PLANS</span>
                 </a>

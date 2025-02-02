@@ -3,19 +3,55 @@
     <div class="container py-4">
       <h6 class="mb-4 fs-5"><small><a href="#" class="text-decoration-none">Control Panel</a> > Traders</small></h6>
 
+<style>
+            .fixed-action-btn {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: #0d6efd;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, background-color 0.2s;
+            z-index: 1050;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fixed-action-btn:hover {
+            transform: scale(1.05);
+            background-color: #0b5ed7;
+        }
+
+        .fixed-action-btn:active {
+            transform: scale(0.95);
+        }
+
+        .fixed-action-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+</style>
+
       <form>
         <div class="mb-3">
           <input type="text" class="form-control search" id="search" placeholder="Search">
         </div>
       </form>
 
-      <a href="{{route('traders.create')}}" class="text-decoration-none">Add Trader</a>
+
+
+      
       <div class="menu-items">
         @foreach($traders as $trader)
           <div class="card mb-3 active-card d-flex justify-content-between">
-            <a href="updateTrader.html" class="text-decoration-none">
+            <a href="{{ route('traders.edit', $trader->id) }}" class="text-decoration-none">
               <div class="nav-link d-flex gap-2 d-flex align-items-center">
-                <img src="img/tradepic.jpg" class="rounded-circle" width="50" height="50"></img>
+                <img src="{{ asset($trader->picture) }}" class="rounded-circle" width="50" height="50"></img>
                 <div class="info text-muted px-3">
                   <p>1 <span  class="fw-bold">{{$trader->trader_name}}</span></p>
                   <p>Human</p>
@@ -25,7 +61,14 @@
           </div>
           @endforeach  
       </div>
-
+ <!-- Fixed Action Button -->
+ <button type="button" class="fixed-action-btn" aria-label="Add new item">
+    <a href="{{route('traders.create')}}">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+    </a>
+</button>
     
   </div>
 

@@ -163,7 +163,7 @@ Route::post('admin/login', [AdminLoginController::class, 'login'])->name('login.
 
 
 // Admin Routes
-Route::prefix('admin')->group(function () {
+    Route::prefix('admin')->group(function () {
     Route::post('logout', [AdminLoginController::class, 'logout'])->name('logout');
 
     // Protecting admin routes using the 'admin' middleware

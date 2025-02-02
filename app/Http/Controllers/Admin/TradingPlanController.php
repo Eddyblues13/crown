@@ -20,14 +20,14 @@ class TradingPlanController extends Controller
             'name' => 'required|string|max:255',
             'min_amount' => 'required|numeric',
             'max_amount' => 'required|numeric',
-            'duration' => 'required|string|max:255'
+            'comment' => 'required|string|max:9000'
         ]);
 
         TradingPlan::create([
             'name' => $request->name,
             'min_amount' => $request->min_amount,
             'max_amount' => $request->max_amount,
-            'duration' => $request->duration
+            'comment' => $request->comment
         ]);
 
         return redirect()->back()->with('message', 'Trading plan added successfully.');

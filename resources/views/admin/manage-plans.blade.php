@@ -11,66 +11,38 @@
         </div>
       </form>
 
-
+      @foreach($tradingPlans as $plan)
       <div class="menu-items">
           <div class="card mb-3 active-card d-flex justify-content-between">
-            <a href="#" class="text-decoration-none">
+            <a href="{{ route('admin.edit-trading-plan', $plan->id) }}" class="text-decoration-none">
               <div class="nav-link d-flex gap-2">
                 <div class="info px-3 text-muted">
-                  <p class="fw-bold">Trading Bronze Plan</p>
-                  <p>1000 - 5000</p>
+                  <p class="fw-bold">{{ $plan->name }}</p>
+                  <p>{{ $plan->min_amount }} - {{ $plan->max_amount }}</p>
                 </div>
               </div>
             </a>
+            @endforeach
           </div> 
           
-          <div class="card mb-3 active-card d-flex justify-content-between">
-            <a href="#" class="text-decoration-none">
-              <div class="nav-link d-flex gap-2">
-                <div class="info px-3 text-muted">
-                  <p class="fw-bold">Trading Bronze Plan</p>
-                  <p>1000 - 5000</p>
-                </div>
-              </div>
-            </a>
-          </div> 
+          
+        
 
-          <div class="card mb-3 active-card d-flex justify-content-between">
-            <a href="#" class="text-decoration-none">
-              <div class="nav-link d-flex gap-2">
-                <div class="info px-3 text-muted">
-                  <p class="fw-bold">Trading Bronze Plan</p>
-                  <p>1000 - 5000</p>
-                </div>
-              </div>
-            </a>
-          </div> 
-
-          <div class="card mb-3 active-card d-flex justify-content-between">
-            <a href="#" class="text-decoration-none">
-              <div class="nav-link d-flex gap-2">
-                <div class="info px-3 text-muted">
-                  <p class="fw-bold">Trading Bronze Plan</p>
-                  <p>1000 - 5000</p>
-                </div>
-              </div>
-            </a>
-          </div> 
-
-          <div class="card mb-3 active-card d-flex justify-content-between">
-            <a href="#" class="text-decoration-none">
-              <div class="nav-link d-flex gap-2">
-                <div class="info px-3 text-muted">
-                  <p class="fw-bold">Trading Bronze Plan</p>
-                  <p>1000 - 5000</p>
-                </div>
-              </div>
-            </a>
-          </div> 
+          
       </div>
 
     
   </div>
+
+  <!-- Fixed Action Button -->
+ <button type="button" class="fixed-action-btn" aria-label="Add new item">
+  <a href="{{route('admin.create-trading-plan')}}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+      </svg>
+  </a>
+</button>
+
 
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
@@ -124,6 +96,44 @@
     });
 });
 
+
+
     </script>
+
+<style>
+  .fixed-action-btn {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #0d6efd;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, background-color 0.2s;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fixed-action-btn:hover {
+  transform: scale(1.05);
+  background-color: #0b5ed7;
+}
+
+.fixed-action-btn:active {
+  transform: scale(0.95);
+}
+
+.fixed-action-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+}
+</style>
+
 </body>
+
 </html>

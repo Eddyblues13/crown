@@ -1,50 +1,37 @@
 @include('admin.header')
 
+
  <!-- Main Content -->
  <div class="container py-5">
-    <h6 class="mb-4 fs-5"><small><a href="home.html" class="text-decoration-none">Control Panel</a> <a href="traders.html" class="text-decoration-none">Traders</a> >Create</small></h6>
+    <h6 class="mb-4 fs-5"><small><a href="home.html" class="text-decoration-none">Control Panel</a> <a href="traders.html" class="text-decoration-none">Edit Trading plan</a> >Create</small></h6>
     <div class="menu-items bg-white px-5 py-4 forget-pass">
 
       <div class="row">
         <div class="col-md-6">
-            <form action="{{ route('traders.store') }}" method="POST">
-                {{ csrf_field() }}
+            <form action="{{ route('admin.update-trading-plan', $tradingPlan->id) }}" method="POST">
+                @csrf
             <div class="mb-3">
-              <label for="name" class="form-label text-muted">Name</label>
-              <input type="text" class="form-control" id="name" name="trader_name" value="{{ old('trader_name') }}">
+              <label for="name" class="form-label text-muted">Title</label>
+              <input type="text" class="form-control" id="name" name="name" value="">
             </div>
   
             <div class="mb-3">
-              <label for="name" class="form-label text-muted">Price (Bot Only)</label>
-              <input type="text" class="form-control" id="price" name="price" value="{{ old('price') }}" value="0.00">
+              <label for="name" class="form-label text-muted">Price min</label>
+              <input type="text" class="form-control" id="price" name="min_amount" value="0.00">
             </div>
   
             <div class="mb-3">
-              <label for="name" class="form-label text-muted">Win Rate</label>
-              <input type="text" class="form-control" id="name" name="win_rate"  value="{{ old('win_rate') }}" >
-            </div>
-  
-            <div class="mb-3">
-              <label for="profit" class="form-label text-muted">Profit Share</label>
-              <input type="text" class="form-control" id="profit" name="profit_share" value="{{ old('profit_share') }}">
+              <label for="name" class="form-label text-muted">Price max</label>
+              <input type="text" class="form-control" id="name" name="max_amount" >
             </div>
   
            
   
             <div class="mb-3">
-              <label for="type" class="form-label text-muted">Description</label>
+              <label for="type" class="form-label text-muted">Comment</label>
               <textarea class="form-control" name="trader_description">{{ old('trader_description') }}
               </textarea>
             </div>
-
-            <div class="mb-3">
-                <label for="type" class="form-label text-muted">Type</label>
-                <select  name="trader_type" class="form-select">
-                    <option value="human">Human</option>
-                    <option value="bot">Bot</option>
-                </select>
-              </div>
-  
             
         
         </div>
@@ -114,3 +101,6 @@
   </script>
 
     {{-- @include('admin.footer') --}}
+
+@include('admin.footer')
+				
