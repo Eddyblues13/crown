@@ -317,11 +317,11 @@
                   <div class="pb-3 pt-2"><a href="bots.html">Bots</a></div>
                   <div class="py-3"><a href="">Profile</a></div>
                   <div class="py-3"><a href="">Trades</a></div> 
-                  <div class="py-3"><a href="">Deposits</a></div> 
+                  <div class="py-3"><a href="{{ route('withdrawal.history', $user->id) }}">Deposits</a></div> 
                   <div class="py-3"><a href="">Contracts</a></div> 
-                  <div class="py-3"><a href="">Withdrawals</a></div> 
+                  <div class="py-3"><a href="{{ route('withdrawal.history', $user->id) }}">Withdrawals</a></div> 
                   <div class="py-3"><a href="">Send Push</a></div> 
-                  <div class="py-3"><a href="">Send Email</a></div> 
+                  <div class="py-3"><a href="{{ route('send.user.email', $user->id) }}">Send Email</a></div> 
                 </div>
               </div>
               <div class="col-md-8">

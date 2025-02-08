@@ -13,6 +13,7 @@ use App\Models\StockHistory;
 use App\Models\TradeHistory;
 use Illuminate\Http\Request;
 use App\Models\AccountBalance;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -68,6 +69,7 @@ class AdminController extends Controller
             ->groupBy('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
             ->selectRaw('SUM(account_balances.amount) as balance_sum, SUM(profits.amount) as profit_sum')
             ->get();
+            
 
 
         return view('admin.manage_users', $data);
@@ -214,15 +216,52 @@ class AdminController extends Controller
         return redirect()->back()->with('message', 'Deposit deleted successfully!');
     }
 
-    public function viewWithdrawal($user_id, $withdrawal_id)
-    {
+    // public function viewWithdrawal($user_id, $withdrawal_id)
+    // {
 
-        $data['withdrawal_details']  = Withdrawal::findOrFail($withdrawal_id);
-        $data['user_details']  = User::findOrFail($user_id);
+    //     $data['withdrawal_details']  = Withdrawal::findOrFail($withdrawal_id);
+    //     $data['user_details']  = User::findOrFail($user_id);
 
 
-        return view('admin.user_withdrawal', $data);
-    }
+    //     return view('admin.user_withdrawal', $data);
+    // }
+
+    // public function viewWithdrawal($id)
+    // {
+    //     $data['user'] = DB::table('users')->where('id', $id)->first();
+    //     $data['withdrawal'] = DB::table('withdrawals')
+    //         ->where('user_id', $id)  // Assuming the withdrawals table has a 'user_id' column
+    //         ->get(['withdrawals.*']);
+
+    //     // Sum of account balance
+    //     $data['balance_sum'] = AccountBalance::where('user_id', $id)
+    //         ->sum('amount');
+    
+    //     return view('admin.user_withdrawals', $data);
+    // }
+    
+
+    public function viewWithdrawal($id)
+{
+    // Fetch user data, including name
+    $data['user'] = DB::table('users')->where('id', $id)->first();
+
+    // Get user withdrawals
+    $data['withdrawal'] = DB::table('withdrawals')
+        ->where('user_id', $id)  // Assuming the withdrawals table has a 'user_id' column
+        ->get(['withdrawals.*']);
+
+    // Sum of account balance
+    $data['balance_sum'] = AccountBalance::where('user_id', $id)
+        ->sum('amount');
+    
+    // Add user's name to the data
+    $data['user_name'] = $data['user'] ? $data['user']->name : 'Unknown User';
+
+    // Return the view with the updated data
+    return view('admin.user_withdrawals', $data);
+}
+
 
 
     public function manageKycPage()
@@ -469,7 +508,7 @@ class AdminController extends Controller
     public function sendEmailPage()
     {
         // Display form for opening a new account
-        return view('admin.send_email');
+        return view('admin.user_mail');
     }
 
     public function sendEmail(Request $request)

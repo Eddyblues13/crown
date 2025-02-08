@@ -146,5 +146,3 @@
 @include('admin.footer')
         
 					
-@include('admin.footer')
-				
