@@ -174,6 +174,8 @@ class AdminController extends Controller
     public function viewDeposit($id)
     {
 
+
+        
         $data['proof']  = Deposit::findOrFail($id);
 
         return view('admin.proof', $data);
@@ -239,6 +241,30 @@ class AdminController extends Controller
     
     //     return view('admin.user_withdrawals', $data);
     // }
+
+
+    public function viewUserDeposit($id)
+    {
+        // Fetch user data, including name
+        $data['user'] = DB::table('users')->where('id', $id)->first();
+    
+        // Get user withdrawals
+        $data['deposit'] = DB::table('deposits')
+            ->where('user_id', $id)  // Assuming the deposits table has a 'user_id' column
+            ->get(['deposits.*']);
+    
+        // Sum of account balance
+        $data['balance_sum'] = AccountBalance::where('user_id', $id)
+            ->sum('amount');
+        
+        // Add user's name to the data
+        $data['user_name'] = $data['user'] ? $data['user']->name : 'Unknown User';
+    
+        // Return the view with the updated data
+        return view('admin.user_deposit', $data);
+    }
+    
+
     
 
     public function viewWithdrawal($id)
@@ -511,6 +537,12 @@ class AdminController extends Controller
         return view('admin.user_mail');
     }
 
+
+    public function sendPush()
+    {
+        // Display form for opening a new account
+        return view('admin.user_push');
+    }
     public function sendEmail(Request $request)
     {
         // Validate the input

@@ -186,12 +186,13 @@ Route::post('admin/login', [AdminLoginController::class, 'login'])->name('login.
         Route::get('/manage-password', [AdminController::class, 'managePassword'])->name('manage.password.page');
         Route::get('/manage-deposit', [AdminController::class, 'manageDepositsPage'])->name('manage.deposits.page');
         Route::get('/manage-withdrawals', [AdminController::class, 'manageWithdrawalsPage'])->name('manage.withdrawals.page');
-        Route::get('/view-deposit/{id}/', [AdminController::class, 'viewDeposit']);
+        Route::get('/view-deposit/{id}/', [AdminController::class, 'viewDeposit'])->name('deposit.history');
         Route::get('process-deposit/{id}', [AdminController::class, 'processDeposit'])->name('admin.process-deposit');
         Route::get('delete-deposit/{id}', [AdminController::class, 'deleteDeposit'])->name('admin.delete-deposit');
         Route::get('/view-withdrawal/{user_id}/{withdrawal_id}', [AdminController::class, 'viewWithdrawal']);
         Route::get('withdrawal_history/{id}/', [AdminController::class, 'viewWithdrawal'])->name('withdrawal.history');
-        
+        Route::get('deposit_history/{id}/', [AdminController::class, 'viewUserDeposit'])->name('deposit.history');
+
         Route::get('/manage-kyc', [AdminController::class, 'manageKycPage'])->name('manage.kyc.page');
         Route::get('/accept-kyc/{id}/', [AdminController::class, 'acceptKyc']);
         Route::get('/reject-kyc/{id}/', [AdminController::class, 'rejectKyc']);
@@ -256,6 +257,7 @@ Route::post('admin/login', [AdminLoginController::class, 'login'])->name('login.
 
         // Route for changing email user
         Route::get('/send/email', [AdminController::class, 'sendEmailPage'])->name('send.user.email');
+        Route::get('/send/push', [AdminController::class, 'sendPush'])->name('send.user.push');
         Route::post('/send/email', [AdminController::class, 'sendEmail'])->name('send.mail');
 
         // logo favicon settings
