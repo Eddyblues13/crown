@@ -49,7 +49,7 @@
                                         <strong>Followers:</strong> <strong>{{ $trader->followers }}</strong>
                                     </p>
                                     <p class="mb-1 text-success" style="font-family: 'Arial', sans-serif;">
-                                        <strong>Copier ROI:</strong> <strong>{{ $trader->copier_roi }}%</strong>
+                                        <strong>Return Rate:</strong> <strong>{{ $trader->copier_roi }}%</strong>
                                     </p>
 
                                 </div>
@@ -59,8 +59,8 @@
                                         <strong>Total Copied Trades:</strong> <strong>{{ $trader->total_copied_trade
                                             }}</strong>
                                     </p>
-                                    <p class="mb-1 text-danger" style="font-family: 'Arial', sans-serif;">
-                                        <strong>Risk Index:</strong> <strong>{{ $trader->risk_index }}</strong>
+                                    <p class="mb-1 text-success" style="font-family: 'Arial', sans-serif;">
+                                        <strong>Profit Share:</strong> <strong>{{ $trader->risk_index }}%</strong>
                                     </p>
                                 </div>
                             </div>

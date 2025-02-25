@@ -47,20 +47,15 @@
                             <!-- Trader Details -->
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p><strong>About the Trader:</strong> {{ $trader->about_trader }}</p>
-                                    <p><strong>Country:</strong> {{ $trader->trader_country }}</p>
                                     <p><strong>Year of Experience:</strong> {{ $trader->trader_year_of_experience }}</p>
                                     <p><strong>Performance:</strong> {{ $trader->performance }}</p>
                                     <p><strong>Followers:</strong> {{ $trader->followers }}</p>
                                 </div>
                                 <div class="col-md-6">
-                                    <p><strong>Trading Max Amount:</strong> ${{ $trader->trading_max_amount }}</p>
-                                    <p><strong>Trading Min Amount:</strong> ${{ $trader->trading_min_amount }}</p>
+
                                     <p><strong>Top-up Interval:</strong> {{ $trader->top_up_interval }}</p>
                                     <p><strong>Top-up Type:</strong> {{ $trader->top_up_type }}</p>
-                                    <p><strong>Top-up Amount:</strong> ${{ $trader->top_up_amount }}</p>
-                                    <p><strong>Investment Duration:</strong> {{ $trader->investment_duration }} months
-                                    </p>
+
                                 </div>
                             </div>
 
@@ -76,8 +71,8 @@
                                     </p>
                                 </div>
                                 <div class="text-end">
-                                    <p class="mb-1 text-danger" style="font-family: 'Arial', sans-serif;">
-                                        <strong>Risk Index:</strong> <strong>{{ $trader->risk_index }}</strong>
+                                    <p class="mb-1 text-success" style="font-family: 'Arial', sans-serif;">
+                                        <strong>Profit Share:</strong> <strong>{{ $trader->risk_index }}</strong>
                                     </p>
                                     <p class="mb-1 text-success" style="font-family: 'Arial', sans-serif;">
                                         <strong>Active Traders:</strong> <strong>{{ $trader->active_traders }}</strong>
@@ -97,18 +92,26 @@
                                 </div>
                                 <br>
 
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label for="withdraw_from">Withdraw From</label>
                                     <select id="withdraw_from" name="withdraw_from" class="form-control" required>
                                         <option value="" disabled selected>Select Withdrawal Type</option>
-                                        <option value="account_balance">Account Balance (${{ number_format($balance_sum,
-                                            2) }})</option>
+
                                         <option value="deposit">Deposit((${{ number_format($successful_deposits_sum,
                                             2) }}))</option>
-                                        <option value="profit">Profit((${{ number_format($profit_sum,
-                                            2) }}))</option>
+
+                                    </select>
+                                </div> --}}
+                                <div class="form-group" style="display: none;">
+                                    <label for="withdraw_from">Withdraw From</label>
+                                    <select id="withdraw_from" name="withdraw_from" class="form-control" required>
+                                        <option value="" disabled>Select Withdrawal Type</option>
+                                        <option value="deposit" selected>
+                                            Deposit (${{ number_format($successful_deposits_sum, 2) }})
+                                        </option>
                                     </select>
                                 </div>
+
                                 <br>
 
                                 <input type="hidden" name="trade_duration" value="{{ $trader->investment_duration }}">

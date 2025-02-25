@@ -88,12 +88,22 @@
     <!-- Start Content-->
     <div class="container-fluid">
 
+      @if ($kyc_required)
       <div class="small-card card widget-flat my-4 kyc-warning">
-
-        <p class="text-center">you have an important task left ! Verify your account to use all crown wave stock
-          service <a class="btn btn-danger" href="{{ route('user.kyc.form') }}">Verify Account</a>
+        <p class="text-center">
+          You have an important task left! Verify your account to use all Vault Capital services.
+          <a class="btn btn-danger" href="{{ route('user.kyc.form') }}">Verify Account</a>
         </p>
       </div>
+      @else
+      <div class="small-card card widget-flat my-4 kyc-verified">
+        <p class="text-center">
+          <span class="text-success">
+            <i class="fas fa-check-circle"></i> Your account is <strong>Verified</strong>!
+          </span>
+        </p>
+      </div>
+      @endif
 
 
       <!-- Trading Card -->

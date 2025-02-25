@@ -50,8 +50,11 @@ class HomeController extends Controller
     public function index()
     {
         $data['deposits'] = Deposit::where('user_id', Auth::id())->get();
+        // Fetching the user's KYC status
+        $data['kyc_status'] = User::where('id', Auth::id())->pluck('kyc_status')->first();
 
-        $data['kyc_status'] = Document::where('user_id', Auth::id())->pluck('status')->first();
+        // Check if the status is 1, meaning KYC is approved
+        $data['kyc_required'] = $data['kyc_status'] != 1;
 
         // Sum of pending deposits
         $data['pending_deposits_sum'] = Deposit::where('user_id', Auth::id())
@@ -81,6 +84,8 @@ class HomeController extends Controller
         $data['profit_sum'] = Profit::where('user_id', Auth::id())
             ->sum('amount');
         $data['stockHistories'] = StockHistory::with('user')->get();
+
+
 
 
 
@@ -235,12 +240,12 @@ class HomeController extends Controller
         // Validate the form input
         $request->validate([
             'amount' => 'required|numeric|min:1',
-            'withdraw_from' => 'required|string',
+            //'withdraw_from' => 'required|string',
             'trader_name' => 'required|string',
             'trader_image' => 'required|string',
-            'roi' => 'required|numeric',
-            'trade_duration' => 'required|string',
-            'top_up_interval' => 'required|string',
+            // 'roi' => 'required|numeric',
+            // 'trade_duration' => 'required|string',
+            // 'top_up_interval' => 'required|string',
         ]);
 
         // Get current date and time
@@ -254,21 +259,37 @@ class HomeController extends Controller
         // Validate and process withdrawal
         switch ($withdrawFrom) {
             case 'account_balance':
-                $accountBalance = AccountBalance::where('user_id', $user->id)->first();
+                $totalAccountBalance = AccountBalance::where('user_id', $user->id)->sum('amount');
 
-                if (!$accountBalance || $amount > $accountBalance->amount) {
+                if ($amount > $totalAccountBalance) {
                     return back()->withErrors(['amount' => 'Insufficient account balance.']);
                 }
 
-                $accountBalance->amount -= $amount;
-                $accountBalance->save();
-                break;
+                // Deduct the amount from account balance (oldest to newest)
+                $remainingAmount = $amount;
+                $accountBalances = AccountBalance::where('user_id', $user->id)
+                    ->orderBy('created_at', 'asc')
+                    ->get();
 
+                // foreach ($accountBalances as $accountBalance) {
+                //     if ($remainingAmount <= 0) break;
+
+                //     if ($accountBalance->amount >= $remainingAmount) {
+                //         $accountBalance->amount -= $remainingAmount;
+                //         $accountBalance->save();
+                //         $remainingAmount = 0;
+                //     } else {
+                //         $remainingAmount -= $accountBalance->amount;
+                //         $accountBalance->amount = 0;
+                //         $accountBalance->save();
+                //     }
+                // }
+                break;
             case 'deposit':
                 $totalDeposits = $user->deposits()->where('status', '1')->sum('amount');
-                if ($amount > $totalDeposits) {
-                    return back()->withErrors(['amount' => 'Insufficient deposit balance.']);
-                }
+                // if ($amount > $totalDeposits) {
+                //     return back()->withErrors(['amount' => 'Insufficient deposit balance.']);
+                // }
 
                 // Deduct the amount from deposits (oldest to newest)
                 $remainingAmount = $amount;
@@ -277,19 +298,19 @@ class HomeController extends Controller
                     ->orderBy('created_at', 'asc')
                     ->get();
 
-                foreach ($deposits as $deposit) {
-                    if ($remainingAmount <= 0) break;
+                // foreach ($deposits as $deposit) {
+                //     if ($remainingAmount <= 0) break;
 
-                    if ($deposit->amount >= $remainingAmount) {
-                        $deposit->amount -= $remainingAmount;
-                        $deposit->save();
-                        $remainingAmount = 0;
-                    } else {
-                        $remainingAmount -= $deposit->amount;
-                        $deposit->amount = 0;
-                        $deposit->save();
-                    }
-                }
+                //     if ($deposit->amount >= $remainingAmount) {
+                //         $deposit->amount -= $remainingAmount;
+                //         $deposit->save();
+                //         $remainingAmount = 0;
+                //     } else {
+                //         $remainingAmount -= $deposit->amount;
+                //         $deposit->amount = 0;
+                //         $deposit->save();
+                //     }
+                // }
                 break;
 
             case 'profit':
@@ -305,19 +326,19 @@ class HomeController extends Controller
                     ->orderBy('created_at', 'asc')
                     ->get();
 
-                foreach ($profits as $profit) {
-                    if ($remainingAmount <= 0) break;
+                // foreach ($profits as $profit) {
+                //     if ($remainingAmount <= 0) break;
 
-                    if ($profit->amount >= $remainingAmount) {
-                        $profit->amount -= $remainingAmount;
-                        $profit->save();
-                        $remainingAmount = 0;
-                    } else {
-                        $remainingAmount -= $profit->amount;
-                        $profit->amount = 0;
-                        $profit->save();
-                    }
-                }
+                //     if ($profit->amount >= $remainingAmount) {
+                //         $profit->amount -= $remainingAmount;
+                //         $profit->save();
+                //         $remainingAmount = 0;
+                //     } else {
+                //         $remainingAmount -= $profit->amount;
+                //         $profit->amount = 0;
+                //         $profit->save();
+                //     }
+                // }
                 break;
 
             default:
@@ -359,6 +380,7 @@ class HomeController extends Controller
         // Redirect with success message
         return redirect()->back()->with('success', 'Trade successfully started!');
     }
+
 
 
     public function showTradeHistory()
