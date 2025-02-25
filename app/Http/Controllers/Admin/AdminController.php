@@ -13,7 +13,6 @@ use App\Models\StockHistory;
 use App\Models\TradeHistory;
 use Illuminate\Http\Request;
 use App\Models\AccountBalance;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -39,6 +38,8 @@ class AdminController extends Controller
             ->get();
         // Sum of account balance
         $data['balance_sum'] = AccountBalance::sum('amount');
+
+
 
         // Sum of pending deposits
         $data['pending_deposits_sum'] = Deposit::where('status', 'pending')->sum('amount');
@@ -69,87 +70,10 @@ class AdminController extends Controller
             ->groupBy('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
             ->selectRaw('SUM(account_balances.amount) as balance_sum, SUM(profits.amount) as profit_sum')
             ->get();
-            
 
 
         return view('admin.manage_users', $data);
     }
-
-
-    public function manageActionPage()
-    {
-        $data['users'] = User::select('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
-            ->leftJoin('account_balances', 'users.id', '=', 'account_balances.user_id')
-            ->leftJoin('profits', 'users.id', '=', 'profits.user_id')
-            ->groupBy('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
-            ->selectRaw('SUM(account_balances.amount) as balance_sum, SUM(profits.amount) as profit_sum')
-            ->get();
-
-
-        return view('admin.manage_action', $data);
-    }
-
-    public function CreateAction()
-    {
-        $data['users'] = User::select('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
-            ->leftJoin('account_balances', 'users.id', '=', 'account_balances.user_id')
-            ->leftJoin('profits', 'users.id', '=', 'profits.user_id')
-            ->groupBy('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
-            ->selectRaw('SUM(account_balances.amount) as balance_sum, SUM(profits.amount) as profit_sum')
-            ->get();
-
-
-        return view('admin.create_action', $data);
-    }
-
-
-
-
-
-    public function managePlans()
-    {
-        $data['users'] = User::select('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
-            ->leftJoin('account_balances', 'users.id', '=', 'account_balances.user_id')
-            ->leftJoin('profits', 'users.id', '=', 'profits.user_id')
-            ->groupBy('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
-            ->selectRaw('SUM(account_balances.amount) as balance_sum, SUM(profits.amount) as profit_sum')
-            ->get();
-
-
-        return view('admin.manage-plans', $data);
-    }
-
-
-
-    public function manageAccount()
-    {
-        $data['users'] = User::select('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
-            ->leftJoin('account_balances', 'users.id', '=', 'account_balances.user_id')
-            ->leftJoin('profits', 'users.id', '=', 'profits.user_id')
-            ->groupBy('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
-            ->selectRaw('SUM(account_balances.amount) as balance_sum, SUM(profits.amount) as profit_sum')
-            ->get();
-
-
-        return view('admin.manage-account', $data);
-    }
-
-
-    public function managePassword()
-    {
-        $data['users'] = User::select('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
-            ->leftJoin('account_balances', 'users.id', '=', 'account_balances.user_id')
-            ->leftJoin('profits', 'users.id', '=', 'profits.user_id')
-            ->groupBy('users.id', 'users.username', 'users.name', 'users.email', 'users.created_at')
-            ->selectRaw('SUM(account_balances.amount) as balance_sum, SUM(profits.amount) as profit_sum')
-            ->get();
-
-
-        return view('admin.manage-password', $data);
-    }
-
-
-
 
 
     public function manageDepositsPage()
@@ -174,8 +98,6 @@ class AdminController extends Controller
     public function viewDeposit($id)
     {
 
-
-        
         $data['proof']  = Deposit::findOrFail($id);
 
         return view('admin.proof', $data);
@@ -218,92 +140,32 @@ class AdminController extends Controller
         return redirect()->back()->with('message', 'Deposit deleted successfully!');
     }
 
-    // public function viewWithdrawal($user_id, $withdrawal_id)
-    // {
-
-    //     $data['withdrawal_details']  = Withdrawal::findOrFail($withdrawal_id);
-    //     $data['user_details']  = User::findOrFail($user_id);
-
-
-    //     return view('admin.user_withdrawal', $data);
-    // }
-
-    // public function viewWithdrawal($id)
-    // {
-    //     $data['user'] = DB::table('users')->where('id', $id)->first();
-    //     $data['withdrawal'] = DB::table('withdrawals')
-    //         ->where('user_id', $id)  // Assuming the withdrawals table has a 'user_id' column
-    //         ->get(['withdrawals.*']);
-
-    //     // Sum of account balance
-    //     $data['balance_sum'] = AccountBalance::where('user_id', $id)
-    //         ->sum('amount');
-    
-    //     return view('admin.user_withdrawals', $data);
-    // }
-
-
-    public function viewUserDeposit($id)
+    public function viewWithdrawal($user_id, $withdrawal_id)
     {
-        // Fetch user data, including name
-        $data['user'] = DB::table('users')->where('id', $id)->first();
-    
-        // Get user withdrawals
-        $data['deposit'] = DB::table('deposits')
-            ->where('user_id', $id)  // Assuming the deposits table has a 'user_id' column
-            ->get(['deposits.*']);
-    
-        // Sum of account balance
-        $data['balance_sum'] = AccountBalance::where('user_id', $id)
-            ->sum('amount');
-        
-        // Add user's name to the data
-        $data['user_name'] = $data['user'] ? $data['user']->name : 'Unknown User';
-    
-        // Return the view with the updated data
-        return view('admin.user_deposit', $data);
+
+        $data['withdrawal_details']  = Withdrawal::findOrFail($withdrawal_id);
+        $data['user_details']  = User::findOrFail($user_id);
+
+
+        return view('admin.user_withdrawal', $data);
     }
-    
-
-    
-
-    public function viewWithdrawal($id)
-{
-    // Fetch user data, including name
-    $data['user'] = DB::table('users')->where('id', $id)->first();
-
-    // Get user withdrawals
-    $data['withdrawal'] = DB::table('withdrawals')
-        ->where('user_id', $id)  // Assuming the withdrawals table has a 'user_id' column
-        ->get(['withdrawals.*']);
-
-    // Sum of account balance
-    $data['balance_sum'] = AccountBalance::where('user_id', $id)
-        ->sum('amount');
-    
-    // Add user's name to the data
-    $data['user_name'] = $data['user'] ? $data['user']->name : 'Unknown User';
-
-    // Return the view with the updated data
-    return view('admin.user_withdrawals', $data);
-}
-
 
 
     public function manageKycPage()
     {
-        $data['kyc'] = User::join('documents', 'users.id', '=', 'documents.user_id')
-            ->get(['users.email', 'users.name', 'documents.*']);
+        $data['kyc'] = User::leftJoin('documents', 'users.id', '=', 'documents.user_id')
+            ->get(['users.id as real_user_id', 'users.email', 'users.name', 'users.kyc_status', 'documents.*']);
 
         return view('admin.kyc', $data);
     }
 
 
+
     public function acceptKyc($id)
     {
 
-        $user  = Document::where('user_id', $id)->first();
-        $user->status = 1;
+        $user  = User::where('id', $id)->first();
+        $user->kyc_status = 1;
         $user->save();
         return back()->with('message', 'Kyc Approved Successfully');
     }
@@ -312,8 +174,8 @@ class AdminController extends Controller
     public function rejectKyc($id)
     {
 
-        $user  = Document::where('user_id', $id)->first();
-        $user->status = 2;
+        $user  = User::where('id', $id)->first();
+        $user->kyc_status = 0;
         $user->save();
         return back()->with('message', 'Kyc Rejected Successfully');;
     }
@@ -534,15 +396,9 @@ class AdminController extends Controller
     public function sendEmailPage()
     {
         // Display form for opening a new account
-        return view('admin.user_mail');
+        return view('admin.send_email');
     }
 
-
-    public function sendPush()
-    {
-        // Display form for opening a new account
-        return view('admin.user_push');
-    }
     public function sendEmail(Request $request)
     {
         // Validate the input
@@ -1101,6 +957,16 @@ class AdminController extends Controller
 
         $data['trades']  = Trade::with('user')->where('user_id', $user->id)->get();
 
+
+        // Total sum of all calculations
+        $total_sum =
+            $data['successful_deposits_sum'] +
+            $data['successful_withdrawals_sum'] +
+            $data['balance_sum'] +
+            $data['profit_sum'];
+ 
+        $data['total_sum'] = $total_sum;
+
         $data['open_trades'] = Trade::with('user')
             ->where('user_id', $user->id)
             ->where('status', 'open')
@@ -1110,6 +976,13 @@ class AdminController extends Controller
             ->where('user_id', $user->id)
             ->where('status', 'close')
             ->get();
+
+        // Fetching the user's KYC status
+        $data['kyc_status'] = User::where('id', $user->id)->pluck('kyc_status')->first();
+
+
+        // Check if the status is 1, meaning KYC is approved
+        $data['kyc_required'] = $data['kyc_status'] != 1;
 
 
         // Redirect to the user's home page with the relevant data

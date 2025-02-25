@@ -1,619 +1,464 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control Panel</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- fonts -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <style>
-        .nav-link {
-            color: var(--bs-primary) !important;
-            padding: 1rem !important;
-        }
-        .card {
-            border-radius: 1rem;
-            transition: background-color 0.3s;
-            border-style: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+@include('admin.header')
+<div class="main-panel">
+    <div class="content bg-dark">
+        <div class="page-inner">
+            @if(session('message'))
+            <div class="alert alert-success mb-2">{{session('message')}}</div>
+            @endif
+            <div>
+            </div>
+            <div>
+            </div> <!-- Beginning of  Dashboard Stats  -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="p-3 card bg-dark">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 ">
+                                    <h1 class="d-inline text-primary">{{$user->name}}</h1>
+                                    <span></span>
+                                    <div class="d-inline">
+                                        <div class="float-right btn-group">
+                                            <a class="btn btn-primary btn-sm" href="{{route('manage.users.page')}}"> <i
+                                                    class="fa fa-arrow-left"></i> back</a> &nbsp;
+                                            <button type="button" class="btn btn-secondary dropdown-toggle btn-sm"
+                                                data-toggle="dropdown" data-display="static" aria-haspopup="true"
+                                                aria-expanded="false">
+                                                Actions
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-lg-right">
+                                                <a class="dropdown-item" href="">Login Activity</a>
+                                                <a class="dropdown-item" href="#">Block</a>
+                                                <a class="dropdown-item" href="">Turn off trade</a>
 
-        }
-        
-        body {
-            background-color: #f5f7fe;
-        }
-        .navbar {
-            background-color: var(--bs-body-bg) !important;
-        }
-        @media (max-width: 768px) {
-            .desktop-nav {
-                display: none;
-            }
-            .mobile-menu {
-                display: block !important;
-            }
-            .navbar{
-                display: none;
-            }
-        }
-        @media (min-width: 769px) {
-            /* .mobile-menu {
-                display: none;
-            } */
-             .navbar2{
-                display: none !important;
-             }
-        }
+                                                <a href="#" data-toggle="modal" data-target="#topupModal"
+                                                    class="dropdown-item">Credit/Debit</a>
+                                                {{-- <a href="#" data-toggle="modal" data-target="#topupxModal"
+                                                    class="dropdown-item">Fund / Wallet</a> --}}
+                                                <a href="#" data-toggle="modal" data-target="#resetpswdModal"
+                                                    class="dropdown-item">Reset Password</a>
+                                                <a href="#" data-toggle="modal" data-target="#clearacctModal"
+                                                    class="dropdown-item">Clear Account</a>
+                                                <a href="#" data-toggle="modal" data-target="#TradingModal"
+                                                    class="dropdown-item">Add Signal Strength</a>
+                                                <a href="#" data-toggle="modal" data-target="#edituser"
+                                                    class="dropdown-item">Edit</a>
+                                                <a href="#" data-toggle="modal" data-target="#sendmailtooneuserModal"
+                                                    class="dropdown-item">Send Email</a>
+                                                <a href="#" data-toggle="modal" data-target="#switchuserModal"
+                                                    class="dropdown-item text-success">Gain Access</a>
+                                                <a href="#" data-toggle="modal" data-target="#deleteModal"
+                                                    class="dropdown-item text-danger">Delete {{$user->name}}</a>
 
-        .sidebar {
-            width: 18rem !important;
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            background: white;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            z-index: 1000;
-            transition: transform 0.3s ease;
-            overflow-y: auto;
-        }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3 mt-4 border rounded row text-light">
+                                <div class="col-md-3">
+                                    <h5 class="text-bold">Account Balance</h5>
+                                    <p>${{number_format($balance_sum, 2, '.', ',')}}</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5>Total Profit</h5>
+                                    <p>${{number_format($profit_sum, 2, '.', ',')}}</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5>Total Deposit</h5>
+                                    <p>${{number_format($successful_deposits_sum, 2, '.', ',')}}</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5>User Account Status</h5>
+                                    <span class="badge badge-success">Active</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <h5>Trades</h5>
 
-        .profile-section {
-            background-image: url("img/Office.jpg");
-            padding: 20px;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 0;
-        }
-
-        .nav-section {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .nav-section .nav-link {
-            padding: 10px 20px;
-            color: #333 !important;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sidebar .nav-section .nav-link {
-            color: #02194a !important;
-        }
-
-        .nav-section .nav-link:hover {
-            background: #f8f9fa;
-        }
-
-        .nav-section-title {
-            padding: 10px 20px;
-            background: #000;
-            color: white;
-            font-size: 14px;
-        }
-
-        .profile-image img {
-            width: 50px;
-            height: 50px;
-            border-radius: 100%;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.show {
-                transform: translateX(0);
-            }
-        }
+                                    <a class="btn btn-sm btn-primary d-inline" href="{{ route('admin.user.trades', $user->id) }}">Add Trade</a>
 
 
+                                </div> 
+                                <div class="col-md-3">
+                                    <h5>KYC</h5>
+                                    {{-- @if($kyc_status=="0")
+                                    <span class="badge badge-danger">Not Verified Yet</span>
+                                    @elseif($kyc_status=="1")
+                                    <span class="badge badge-success">Verified</span>@endif --}}
+                                </div>
+                                <div class="col-md-3">
+                                    <h5>Signal Strength</h5>
+                                    <span class="badge badge-success">{{$user->signal_strength}}%</span>
+                                </div>
+                            </div>
+                            <div class="mt-3 row text-light">
+                                <div class="col-md-12">
+                                    <h5>USER INFORMATION</h5>
+                                </div>
+                            </div>
+                            <div class="p-3 border row text-light">
+                                <div class="col-md-4 border-right">
+                                    <h5>Fullname</h5>
+                                </div>
+                                <div class="col-md-8">
+                                    <h5>{{$user->name}}</h5>
+                                </div>
+                            </div>
+                            <div class="p-3 border row text-light">
+                                <div class="col-md-4 border-right">
+                                    <h5>Email Address</h5>
+                                </div>
+                                <div class="col-md-8">
+                                    <h5>{{$user->email}}</h5>
+                                </div>
+                            </div>
+                            <div class="p-3 border row text-light">
+                                <div class="col-md-4 border-right">
+                                    <h5>Mobile Number</h5>
+                                </div>
+                                <div class="col-md-8">
+                                    <h5>{{$user->phone}}</h5>
+                                </div>
+                            </div>
+                            <div class="p-3 border row text-light">
+                                <div class="col-md-4 border-right">
+                                    <h5>Date of birth</h5>
+                                </div>
+                                <div class="col-md-8">
+                                    <h5>{{$user->dob}}</h5>
+                                </div>
+                            </div>
+                            <div class="p-3 border row text-light">
+                                <div class="col-md-4 border-right">
+                                    <h5>Nationality</h5>
+                                </div>
+                                <div class="col-md-8">
+                                    <h5>{{$user->country}}</h5>
+                                </div>
+                            </div>
 
-
-
-        .dropdown-btn {
-            width: 100%;
-            padding: 15px;
-            /* background: none; */
-            border: none;
-            color: white;
-            text-align: left;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .dropdown-content {
-            display: none;
-            background-color: #ffffff;
-        }
-
-        .dropdown-content.active {
-            display: block;
-        }
-
-        .dropdown-content a {
-            color: white;
-            text-decoration: none;
-            padding: 12px 15px 12px 35px;
-            display: block;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #1a1a1a;
-        }
-
-        .arrow {
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            display: inline-block;
-            padding: 3px;
-            transform: rotate(45deg);
-            transition: transform 0.3s;
-        }
-
-        .arrow.up {
-            transform: rotate(-135deg);
-        }
-
-        .search{
-          background-color: transparent;
-          outline: none;
-        }
-        .search:focus {
-          background-color: transparent;
-          outline: none;
-          box-shadow: none;
-          border-color: #4a4a4a
-        }
-        a{
-          text-decoration: none;
-        }
-        td{
-            text-transform: uppercase;
-            border: none;
-            padding: 20px 10px !important;
-        }
-
-
-    @media (max-width: 767px) {
-      .table, .table thead, .table tbody, .table th, .table td, .table tr {
-        display: block;
-        text-align: center;
-      }
-    }
-
-    </style>
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light border-bottom">
-        <div class="container-fluid">
-            <button class="btn mobile-menu" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebarMenu">
-                <i class="bi bi-list"></i>
-            </button>
-            <a class="navbar-brand" href="#"><h6>CONTROL PANEL</h6></a>
-            <div class="desktop-nav ms-auto d-flex align-items-center gap-4">
-                <a href="#" class="text-decoration-none text-body d-flex align-items-center gap-2">
-                    <i class="bi bi-people"></i> USERS
-                </a>
-                <a href="#" class="text-decoration-none text-body d-flex align-items-center gap-2">
-                    <i class="bi bi-wallet2"></i> WALLETS
-                </a>
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle" type="button" id="themeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        Theme
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="themeDropdown">
-                        <li><a class="dropdown-item" href="#" data-theme="light">Light</a></li>
-                        <li><a class="dropdown-item" href="#" data-theme="dark">Dark</a></li>
-                    </ul>
+                            <div class="p-3 border row text-light">
+                                <div class="col-md-4 border-right">
+                                    <h5>Registered</h5>
+                                </div>
+                                <div class="col-md-8">
+                                    <h5>{{ \Carbon\Carbon::parse($user->created_at)->format('D, M j, Y g:i A') }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <button class="btn" id="powerBtn">
-                <i class="bi bi-power"></i>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Navbar for mobile -->
-    <nav class="navbar navbar2 navbar-expand-lg navbar-light border-bottom d-flex">
-        <div class="container-fluid">
-            <button class="btn mobile-menu" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebarMenu">
-                <i class="bi bi-list"></i>
-            </button>
-            <a class="navbar-brand" href="#"><h6>CONTROL PANEL</h6></a>
-            <button class="btn" id="powerBtn">
-                <i class="bi bi-power"></i>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Sidebar -->
-    <div class="sidebar offcanvas offcanvas-start" tabindex="-1" id="sidebar" data-bs-scroll="true" data-bs-backdrop="false">
-        <div class="profile-section mb-0 d-flex">
-            <div class="d-block align-items-center text-center gap-3">
-                <div class="profile-image py-4"><img src="img/human.png" alt=""></div>
-                <div>
-                    <div class="fw-bold">Ofofonobs Developer</div>
-                    <small class="text-muted">admin@mail.com</small>
-                </div>
-            </div>
-            
-                <button type="button" class="btn-close mt-4 ms-4" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-
-        <!-- Theme Section -->
-        <div class="nav-section mt-0 dropdown">
-            <div class="nav-section-title dropdown-btn">
-                Theme
-                <span class="arrow"></span>
-            </div>
-            <div class="dropdown-content">
-                <a href="#" class="nav-link text-dark" id="darkMode">
-                    <i class="fas fa-moon"></i> Dark
-                </a>
-                <a href="#" class="nav-link" id="lightMode">
-                    <i class="fas fa-sun"></i> Light
-                </a>
-            </div>
-        </div>
-
-        <!-- Control Section -->
-        <div class="nav-section dropdown">
-            <div class="nav-section-title dropdown-btn ">
-                Control
-                <span class="arrow"></span>
-            </div>
-            <div class="dropdown-content">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-users"></i> Users
-                </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-wallet"></i> Wallets
-                </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-chart-line"></i> Traders
-                </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-money-bill"></i> Payouts
-                </a>
-            </div>
-        </div>
-
-        <!-- Account Section -->
-        <div class="nav-section dropdown">
-            <div class="nav-section-title dropdown-btn">
-                Account
-                <span class="arrow"></span>
-            </div>
-            <div class="dropdown-content">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-user"></i> My Account
-                </a>
-                <a href="#" class="nav-link">
-                    <i class="fas fa-sign-out-alt"></i> Sign Out
-                </a>
             </div>
         </div>
     </div>
-
-    <!-- Main Content -->
-    <div class="container py-4">
-      <h6 class="mb-4 fs-5"><small><a href="#" class="text-decoration-none">Control Panel</a> > <a href="users.html">Users</a> >{{$user->name}}</small></h6>
-
-        <div class="menu-items">
-          <div class="card mb-3 d-flex justify-content-between">
-            <div class="row px-3">
-              <div class="col-md-4 mx-auto">
-                <div class="text-center">
-                  <img src="img/camera.png" class="rounded-circle mt-4" width="143" height="143"></img>
-                  <div class="pb-3 pt-2"><a href="bots.html">Bots</a></div>
-                  <div class="py-3"><a href="">Profile</a></div>
-                  <div class="py-3"><a href="">Trades</a></div> 
-                  <div class="py-3"><a href="{{ route('deposit.history', $user->id) }}">Deposits</a></div> 
-                  <div class="py-3"><a href="">Contracts</a></div> 
-                  <div class="py-3"><a href="{{ route('withdrawal.history', $user->id) }}">Withdrawals</a></div> 
-                  <div class="py-3"><a href="{{ route('send.user.push', $user->id) }}">Send Push</a></div> 
-                  <div class="py-3"><a href="{{ route('send.user.email', $user->id) }}">Send Email</a></div> 
+    <!-- Top Up Modal first -->
+    <div id="topupModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title text-light">Credit/Debit {{$user->name}}
+                        account.</strong></h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
                 </div>
-              </div>
-              <div class="col-md-8">
-                <table class="table table-striped mt-4">
-                    <tbody>
-                      <tr>
-                        <td>trading balance</td>
-                        <td>${{number_format($balance_sum, 2, '.', ',')}}</td>
-                      </tr>
-                      <tr>
-                        <td>signal strength</td>
-                        <td>1</td>
-                      </tr>
-                      <tr>
-                        <td>trading balance</td>
-                        <td>${{number_format($balance_sum, 2, '.', ',')}}</td>
-                      </tr>
-                      <tr>
-                        <td>message</td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td>message type</td>
-                        <td>Normal</td>
-                      </tr>
-                      <tr>
-                        <td>account status</td>
-                        <td>Active</td>
-                      </tr>
-                      <tr>
-                        <td>mining balance bnb</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>balance bnb</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>mining balance bitcoin</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>mining balance ethereum</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>id</td>
-                        <td>{{$user->id}}</td>
-                      </tr>
-                      <tr>
-                        <td>email</td>
-                        <td>{{$user->email}}</td>
-                      </tr>
-                      <tr>
-                        <td>password</td>
-                        <td>Lele1314521</td>
-                      </tr>
-                      <tr>
-                        <td>pin</td>
-                        <td>70010</td>
-                      </tr>
-                      <tr>
-                        <td>id verification</td>
-                        <td>Skipped</td>
-                      </tr>
-                      <tr>
-                        <td>email verification</td>
-                        <td>Completed</td>
-                      </tr>
-                      <tr>
-                        <td>address verification</td>
-                        <td>Pending</td>
-                      </tr>
-                      <tr>
-                        <td>dob</td>
-                        <td>{{$user->date_of_birth}}</td>
-                      </tr>
-                      <tr>
-                        <td>city</td>
-                        <td>{{$user->id}}</td>
-                      </tr>
-                      <tr>
-                        <td>state</td>
-                        <td>{{$user->id}}</td>
-                      </tr>
-                      <tr>
-                        <td>last name</td>
-                        <td>{{$user->name}}</td>
-                      </tr>
-                      <tr>
-                        <td>post code</td>
-                        <td>463400</td>
-                      </tr>
-                      <tr>
-                        <td>created ip</td>
-                        <td>163.5.148.127</td>
-                      </tr>
-                      <tr>
-                        <td>created ip</td>
-                        <td>163.5.148.127</td>
-                      </tr>
-                      <tr>
-                        <td>first name</td>
-                        <td>{{$user->name}}</td>
-                      </tr>
-                      <tr>
-                        <td>mobile number</td>
-                        <td>{{$user->phone}}</td>
-                      </tr>
-                      <tr>
-                        <td>street address</td>
-                        <td>{{$user->third_adress}}</td>
-                      </tr>
-                      <tr>
-                        <td>photo back view</td>
-                        <td>photo front view</td>
-                      </tr>
-                      <tr>
-                        <td>photo profile</td>
-                        <td>camera.png</td>
-                      </tr>
-                      <tr>
-                        <td>referral link</td>
-                        <td>https://venturescapital.org/signup.html?refid=101</td>
-                      </tr>
-                      <tr>
-                        <td>referral count</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>deposit sol wallet</td>
-                        <td>0hdhdjdkwkdndnadkankndadnadn</td>
-                      </tr>
-                      <tr>
-                        <td>deposit btc wallet</td>
-                        <td>hhsjskksksksskdhdmsm</td>
-                      </tr>
-                      <tr>
-                        <td>deposit eth wallet</td>
-                        <td>0hdhdhdsksbndikwdbdiwbnd</td>
-                      </tr>
-                      <tr>
-                        <td>deposit ltc wallet</td>
-                        <td>ltc1qf8tm0k43xzye296e8dvrse6c6zguk7p6g0wnpn</td>
-                      </tr>
-                      <tr>
-                        <td>deposit doge wallet</td>
-                        <td>DSA3t4ZurRyatCDXWAKxp1v9t6ryTp7YXd</td>
-                      </tr>
-                      <tr>
-                        <td>deposit usdt wallet</td>
-                        <td>bhjbjjajbdskffksanfsanfasnfansf</td>
-                      </tr>
-                      <tr>
-                        <td>deposit eth wallet network</td>
-                        <td>ETH</td>
-                      </tr>
-                      <tr>
-                        <td>deposit usdt wallet network</td>
-                        <td>USDT-ERC20</td>
-                      </tr>
-                      <tr>
-                        <td>deposit btc wallet id</td>
-                        <td>1</td>
-                      </tr>
-                      <tr>
-                        <td>deposit eth wallet id</td>
-                        <td>2</td>
-                      </tr>
-                      <tr>
-                        <td>deposit doge wallet id</td>
-                        <td>3</td>
-                      </tr>
-                      <tr>
-                        <td>deposit usdt wallet id</td>
-                        <td>4</td>
-                      </tr>
-                      <tr>
-                        <td>deposit sol wallet id</td>
-                        <td>4</td>
-                      </tr>
-                      <tr>
-                        <td>deposit ltc wallet id</td>
-                        <td>4</td>
-                      </tr>
-                      <tr>
-                        <td>trading profit</td>
-                        <td>$0.00</td>
-                      </tr>
-                      <tr>
-                        <td>mining speed ps bnb</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>mining speed ps bitcoin</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>mining speed ps ethereum</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>mining speed ps dogecoin</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>mining hashrate bnb</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>mining hashrate bitcoin</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>mining hashrate ethereum</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>mining hashrate dogecoin</td>
-                        <td>0</td>
-                      </tr>
-                      <tr>
-                        <td>created at</td>
-                        <td>{{$user->created_at}}</td>
-                      </tr>
-                      <tr>
-                        <td>updated at</td>
-                        <td>{{$user->updated_at}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-              </div>
-            </div> 
-          </div>
+                <div class="modal-body bg-dark">
+                    <form action="{{route('credit-debit')}}" method="POST" enctype="multipart/form-data">
+                        {{ csrf_field()}}
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" name="user_id" value="{{$user->id}}">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control bg-dark text-light" placeholder="Enter amount" type="text"
+                                name="amount" required>
+                        </div>
+                        <div class="form-group">
+                            <h5 class="text-light">Select where to Credit/Debit</h5>
+                            <select class="form-control bg-dark text-light" name="type" required>
+                                <option value="" selected disabled>Select Column</option>
+                                <option value="Profit">Profit</option>
+                                {{-- <option value="Ref_Bonus">Ref_Bonus</option> --}}
+                                <option value="balance">Account Balance</option>
+                                <option value="Deposit">Deposit</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <h5 class="text-light">Select credit to add, debit to subtract.</h5>
+                            <select class="form-control bg-dark text-light" name="t_type" required>
+                                <option value="">Select type</option>
+                                <option value="Credit">Credit</option>
+                                <option value="Debit">Debit</option>
+                            </select>
+                            <small> <b>NOTE:</b> You cannot debit deposit</small>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-light" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        
     </div>
+    <!-- /deposit for a plan Modal -->
 
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Handle sidebar visibility and dropdowns
-    document.addEventListener('DOMContentLoaded', () => {
-    const sidebar = document.getElementById('sidebar');
 
-    // Open all dropdowns when the sidebar is shown
-    sidebar.addEventListener('shown.bs.offcanvas', () => {
-        document.querySelectorAll('.dropdown-content').forEach(content => {
-            content.classList.add('active');
-            const arrow = content.previousElementSibling.querySelector('.arrow');
-            if (arrow) {
-                arrow.classList.add('up');
-            }
-        });
-    });
 
-    // Optional: Close all dropdowns when the sidebar is hidden
-    sidebar.addEventListener('hidden.bs.offcanvas', () => {
-        document.querySelectorAll('.dropdown-content').forEach(content => {
-            content.classList.remove('active');
-            const arrow = content.previousElementSibling.querySelector('.arrow');
-            if (arrow) {
-                arrow.classList.remove('up');
-            }
-        });
-    });
+    <!-- Top Up Modal -->
+    <div id="topupxModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title text-light">Fund/Debit {{$user->name}} WALLET.</strong></h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body bg-dark">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        {{ csrf_field()}}
+                        <div class="form-group">
+                            <input class="form-control bg-dark text-light" placeholder="Enter amount" type="text"
+                                name="amount" required>
+                        </div>
+                        <div class="form-group">
+                            <h5 class="text-light">Select Wallet to Credit/Debit</h5>
+                            <select class="form-control bg-dark text-light" name="type" required>
+                                <option value="" selected disabled>Select Wallet</option>
+                                <option value="Bitcoin">Bitcoin</option>
+                                <option value="Ethereum">Ethereum</option>
+                                <option value="LTC">LTC</option>
+                                <option value="BNB">BNB</option>
+                                <option value="Doge">Doge</option>
+                                <option value="USDT">USDT</option>
+                                <option value="Dash">Dash</option>
+                                <option value="Tron">Tron</option>
+                                <option value="XRP">XRP</option>
+                                <option value="EOS">EOS</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <h5 class="text-light">Select credit to add, debit to subtract.</h5>
+                            <select class="form-control bg-dark text-light" name="t_type" required>
+                                <option value="">Select type</option>
+                                <option value="Credit">Credit</option>
+                                <option value="Debit">Debit</option>
+                            </select>
+                            <small> <b>NOTE:</b> You cannot debit deposit</small>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="user_id" value="151">
+                            <input type="submit" class="btn btn-light" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /deposit for a plan Modal -->
 
-    // Dropdown button functionality
-    document.querySelectorAll('.dropdown-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            const dropdown = button.nextElementSibling;
-            const arrow = button.querySelector('.arrow');
-            
-            // Close all other dropdowns
-            document.querySelectorAll('.dropdown-content').forEach(content => {
-                if (content !== dropdown && content.classList.contains('active')) {
-                    content.classList.remove('active');
-                    content.previousElementSibling.querySelector('.arrow').classList.remove('up');
-                }
-            });
 
-            // Toggle current dropdown
-            dropdown.classList.toggle('active');
-            arrow.classList.toggle('up');
-        });
-    });
-});
 
-    </script>
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+    <!-- send a single user email Modal-->
+    <div id="sendmailtooneuserModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title text-light">Send Email</h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body bg-dark">
+                    <p class="text-light">This message will be sent to {{$user->name}}</p>
+                    <form style="padding:3px;" role="form" method="post" action="{{ route('admin.send.mail')}}">
+
+                        @csrf
+                        <input type="hidden" name="email" value="{{$user->email}}">
+                        <div class=" form-group">
+                            <input type="text" name="subject" class="form-control bg-dark text-light"
+                                placeholder="Subject" required>
+                        </div>
+                        <div class=" form-group">
+                            <textarea placeholder="Type your message here" class="form-control bg-dark text-light"
+                                name="message" row="8" placeholder="Type your message here" required></textarea>
+                        </div>
+                        <div class=" form-group">
+
+                            <input type="submit" class="btn btn-light" value="Send">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Trading History Modal -->
+
+    <div id="TradingModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title text-light">Add Signal strength for {{$user->name}} </h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body bg-dark">
+                    <form role="form" method="post" action="{{ route('admin.add_signal_strength') }}">
+                        @csrf
+
+                        <div class="form-group">
+                            <h5 class="text-light">Signal Strength</h5>
+                            <input type="number" name="signal_strength" class="form-control bg-dark text-light" min="0"
+                                max="100" required>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-light" value="Add Signal Strength">
+                            <input type="hidden" name="user_id" value="{{$user->id}}">
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /send a single user email Modal -->
+
+    <!-- Edit user Modal -->
+    <div id="edituser" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title text-light">Edit {{$user->name}} details</h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body bg-dark">
+                    <form role="form" method="post" action="{{ route('admin.updateUser', $user->id) }}">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group">
+                            <label class="text-light">First Name</label>
+                            <input class="form-control bg-dark text-light" id="input1" value="{{$user->name}}"
+                                type="text" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Last Name</label>
+                            <input class="form-control bg-dark text-light" value="{{$user->last_name}}" type="text"
+                                name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Email</label>
+                            <input class="form-control bg-dark text-light" value="{{$user->email}}" type="text"
+                                name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Phone Number</label>
+                            <input class="form-control bg-dark text-light" value="{{$user->phone}}" type="text"
+                                name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-light">Country</label>
+                            <input class="form-control bg-dark text-light" value="{{$user->country}}" type="text"
+                                name="country">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-light" value="Update">
+                        </div>
+                    </form>
+                </div>
+                <script>
+                    $('#input1').on('keypress', function(e) {
+                    return e.which !== 32; // Disallow spaces in username
+                });
+                </script>
+            </div>
+        </div>
+    </div>
+    <!-- /Edit user Modal -->
+
+
+    <!-- Reset user password Modal -->
+    <div id="resetpswdModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title text-light">Reset Password</strong></h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body bg-dark">
+                    <p class="text-light">Are you sure you want to reset password for {{$user->name}} to <span
+                            class="text-primary font-weight-bolder">user01236</span></p>
+                    <a class="btn btn-light" href="{{ route('reset.password', $user->id) }}">Reset Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Reset user password Modal -->
+
+    <!-- Switch useraccount Modal -->
+    <div id="switchuserModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title text-light">You are about to login as {{$user->name}}.</strong></h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body bg-dark">
+                    <a class="btn btn-success" href="{{ route('users.impersonate', $user->id) }}">Proceed</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Switch user account Modal -->
+
+    <!-- Clear account Modal -->
+    <div id="clearacctModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+                    <h4 class="modal-title text-light">Clear Account</strong></h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body bg-dark">
+                    <p class="text-light">You are clearing account for {{$user->name}} to $0.00</p>
+                    <a class="btn btn-light" href="{{route('clear.account',$user->id)}}">Proceed</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Clear account Modal -->
+
+    <!-- Delete user Modal -->
+    <div id="deleteModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header bg-dark">
+
+                    <h4 class="modal-title text-light">Delete User</strong></h4>
+                    <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body bg-dark p-3">
+                    <p class="text-light">Are you sure you want to delete {{$user->name}}
+                        Account? Everything
+                        associated
+                        with this account will be loss.</p>
+                    <a class="btn btn-danger" href="{{ route('delete.user', $user->id) }}">Yes i'm sure</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Delete user Modal -->
+
+    @include('admin.footer')

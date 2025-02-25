@@ -42,7 +42,7 @@
 								<td>${{number_format($dep->amount, 2, '.', ',')}}</td>
 								<td>{{$dep->deposit_type}}</td>
 
-								<td>
+								<td> 
 									@if($dep->status==='0')
 									<span class="badge badge-danger">Pending</span>
 									@elseif($dep->status==='1')

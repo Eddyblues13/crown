@@ -1,129 +1,88 @@
 @include('admin.header')
-    <!-- Main Content -->
-    <div class="container py-4">
-      <h6 class="mb-4 fs-5"><small><a href="#" class="text-decoration-none">Control Panel</a> > Traders</small></h6>
 
-<style>
-            .fixed-action-btn {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background-color: #0d6efd;
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, background-color 0.2s;
-            z-index: 1050;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+<!-- End Sidebar -->
+<div class="main-panel">
+    <div class="content bg-dark">
+        <div class="page-inner">
+            @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+            @endif
 
-        .fixed-action-btn:hover {
-            transform: scale(1.05);
-            background-color: #0b5ed7;
-        }
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+            <div class="mt-2 mb-4">
+                <h1 class="title1 text-light">Expert traders</h1>
+            </div>
+            <div>
+            </div>
+            <div>
+            </div>
+            <div class="mb-5 row">
+                <div class="mt-2 mb-3 col-lg-12">
+                    <a class="btn btn-primary" href="{{route('traders.create')}}"><i class="fa fa-plus"></i>Add A New
+                        Trader</a>
+                </div>
+                @foreach($traders as $trader)
+                <div class="col-lg-4">
 
-        .fixed-action-btn:active {
-            transform: scale(0.95);
-        }
+                    <div class="pricing-table purple border p-4 card bg-dark shadow">
+                        <div class="price-tag">
+                            <img src="{{asset($trader->picture)}}" class="card-img-top" alt="Image"><br>
+                            <center><i>Expert Trader</i></center>
+                            <h2 class="text-light">{{$trader->trader_name}}</h2>
+                        </div>
+                        <!-- Features -->
+                        <div class="pricing-features">
+                            <!--	<div class="feature text-light">Minimum trading amount:<span class="text-light">$100</span></div>
+									<div class="feature text-light">Maximum trading amount:<span  class="text-light">$900,000</span></div>-->
 
-        .fixed-action-btn svg {
-            width: 24px;
-            height: 24px;
-            fill: white;
-        }
-</style>
+                            <div class="feature text-light">active traders:<span
+                                    class="text-light">{{$trader->active_traders}}</span></div>
+                            <div class="feature text-light">total copied traders:<span
+                                    class="text-light">{{$trader->total_copied_trade}}</span></div>
+                            <div class="feature text-light">coppiers ROI:<span
+                                    class="text-light">{{$trader->copier_roi}}</span></div>
+                            <div class="feature text-light">Risk Index:<span
+                                    class="text-light">{{$trader->risk_index}}</span></div>
+                            <div class="feature text-light">Performance:<span
+                                    class="text-light">{{$trader->performance}}</span></div>
+                        </div> <br>
 
-      <form>
-        <div class="mb-3">
-          <input type="text" class="form-control search" id="search" placeholder="Search">
+                        <!-- Button -->
+                        <div class="text-center">
+                            <a href="{{ route('traders.edit', $trader->id) }}" class="btn btn-primary"><i
+                                    class="text-white flaticon-pencil"></i>
+                            </a> &nbsp;
+
+                            <form action="{{ route('traders.destroy', $trader->id) }}" method="POST"
+                                style="display: inline-block;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger"
+                                    onclick="return confirm('Are you sure?')"><i
+                                        class="text-white fa fa-times"></i></button>
+                            </form>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                @endforeach
+            </div>
+
         </div>
-      </form>
+    </div>
+</div>
 
 
 
-      
-      <div class="menu-items">
-        @foreach($traders as $trader)
-          <div class="card mb-3 active-card d-flex justify-content-between">
-            <a href="{{ route('traders.edit', $trader->id) }}" class="text-decoration-none">
-              <div class="nav-link d-flex gap-2 d-flex align-items-center">
-                <img src="{{ asset($trader->picture) }}" class="rounded-circle" width="50" height="50"></img>
-                <div class="info text-muted px-3">
-                  <p>1 <span  class="fw-bold">{{$trader->trader_name}}</span></p>
-                  <p>Human</p>
-                </div> 
-            </div>  
-            </a>
-          </div>
-          @endforeach  
-      </div>
- <!-- Fixed Action Button -->
- <button type="button" class="fixed-action-btn" aria-label="Add new item">
-    <a href="{{route('traders.create')}}">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-        </svg>
-    </a>
-</button>
-    
-  </div>
-
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Handle sidebar visibility and dropdowns
-    document.addEventListener('DOMContentLoaded', () => {
-    const sidebar = document.getElementById('sidebar');
-
-    // Open all dropdowns when the sidebar is shown
-    sidebar.addEventListener('shown.bs.offcanvas', () => {
-        document.querySelectorAll('.dropdown-content').forEach(content => {
-            content.classList.add('active');
-            const arrow = content.previousElementSibling.querySelector('.arrow');
-            if (arrow) {
-                arrow.classList.add('up');
-            }
-        });
-    });
-
-    // Optional: Close all dropdowns when the sidebar is hidden
-    sidebar.addEventListener('hidden.bs.offcanvas', () => {
-        document.querySelectorAll('.dropdown-content').forEach(content => {
-            content.classList.remove('active');
-            const arrow = content.previousElementSibling.querySelector('.arrow');
-            if (arrow) {
-                arrow.classList.remove('up');
-            }
-        });
-    });
-
-    // Dropdown button functionality
-    document.querySelectorAll('.dropdown-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            const dropdown = button.nextElementSibling;
-            const arrow = button.querySelector('.arrow');
-            
-            // Close all other dropdowns
-            document.querySelectorAll('.dropdown-content').forEach(content => {
-                if (content !== dropdown && content.classList.contains('active')) {
-                    content.classList.remove('active');
-                    content.previousElementSibling.querySelector('.arrow').classList.remove('up');
-                }
-            });
-
-            // Toggle current dropdown
-            dropdown.classList.toggle('active');
-            arrow.classList.toggle('up');
-        });
-    });
-});
-
-    </script>
-</body>
-</html>
+@include('admin.footer')

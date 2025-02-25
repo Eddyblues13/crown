@@ -22,7 +22,11 @@
                                     <div class="form-group col-md-4">
                                         <h5 class="text-light">Asset</h5>
                                         <select name="asset" class="form-control text-light bg-dark" required>
-                                            <option value="lyxe">lyxe</option>
+
+                                            @foreach($traders as $trader)
+                                            <option value="{{ $trader->trader_name }}">{{ $trader->trader_name }}
+                                            </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="form-group col-md-4">

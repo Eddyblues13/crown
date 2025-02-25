@@ -91,12 +91,9 @@ class PaymentSettingController extends Controller
      * @param  \App\Models\PaymentSetting  $paymentSetting
      * @return \Illuminate\Http\Response
      */
-
-   
-
-    public function edit( Request $request,PaymentSetting $payment)
+    public function edit(PaymentSetting $paymentSetting)
     {
-        return view('admin.payment_settings.edit', compact('payment'));
+        return view('admin.payment_settings.edit', compact('paymentSetting'));
     }
 
     /**

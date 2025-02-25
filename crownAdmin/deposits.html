@@ -302,6 +302,45 @@
           </div>
         
       </div>
+      <!-- Add this CSS to the style section -->
+<style>
+    .floating-btn {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background-color: #0d6efd;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        border: none;
+    }
+    
+    .floating-btn:hover {
+        background-color: #0b5ed7;
+        transform: scale(1.1);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+</style>
+
+<!-- Add this button just before closing body tag -->
+<button class="floating-btn" onclick="handleActionClick()">
+    <i class="fas fa-plus"></i>
+</button>
+
+<!-- Add this script -->
+<script>
+    function handleActionClick() {
+        // Handle button click action here
+        alert('Action button clicked!');
+    }
+</script>
 
     
   </div>

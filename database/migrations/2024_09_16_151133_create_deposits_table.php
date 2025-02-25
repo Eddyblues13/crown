@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('deposit_type'); // Type of deposit (e.g., bank transfer, cryptocurrency)
             $table->string('status');
-            $table->decimal('amount', 15, 2); // Amount of the deposit
+            $table->string('amount', 15, 2); // Amount of the deposit
             $table->string('payment_mode'); // Payment mode used
             $table->string('proof')->nullable(); // Path to the proof file (nullable)
             $table->timestamps();

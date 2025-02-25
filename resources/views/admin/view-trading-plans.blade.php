@@ -1,147 +1,108 @@
 @include('admin.header')
 
-
+<div class="main-panel">
     <div class="content-wrapper">
         @if(session('message'))
         <div class="alert alert-success mb-2">{{ session('message') }}</div>
         @endif
 
-      
+        <div class="content bg-dark">
+            <div class="page-inner">
+                <div class="mt-2 mb-4">
 
-
-    <!-- Main Content -->
-    <div class="container py-4">
-      <h6 class="mb-4 fs-5"><small><a href="#" class="text-decoration-none">Control Panel</a> > Plans</small></h6>
-
-      <form>
-        <div class="mb-3">
-          <input type="text" class="form-control search" id="search" placeholder="Search">
-        </div>
-      </form>
-
-      @foreach($tradingPlans as $plan)
-      <div class="menu-items">
-          <div class="card mb-3 active-card d-flex justify-content-between">
-            <a href="{{ route('admin.edit-trading-plan', $plan->id) }}" class="text-decoration-none">
-              <div class="nav-link d-flex gap-2">
-                <div class="info px-3 text-muted">
-                  <p class="fw-bold">{{ $plan->name }}</p>
-                  <p>{{ $plan->min_amount }} - {{ $plan->max_amount }}</p>
                 </div>
-              </div>
-            </a>
-            @endforeach
-          </div> 
-          
-          
-        
 
-          
-      </div>
+                <div class="mt-2 mb-4 d-flex justify-content-between align-items-center">
+                    <h1 class="title1 text-light">Manage Trading Plans</h1>
+                    <a href="{{ route('admin.create-trading-plan') }}" class="btn btn-primary">Create New Plan</a>
+                </div>
 
-    
-  </div>
+                <div class="mb-5 row">
+                    <div class="col-12 card shadow p-4 bg-dark">
+                        <div class="table-responsive" data-example-id="hoverable-table">
+                            <table id="PlanTable" class="table table-hover text-light">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Minimum Amount ($)</th>
+                                        <th>Maximum Amount ($)</th>
+                                        <th>Duration</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($tradingPlans as $plan)
+                                    <tr>
+                                        <td>{{ $plan->name }}</td>
+                                        <td>{{ $plan->min_amount }}</td>
+                                        <td>{{ $plan->max_amount }}</td>
+                                        <td>{{ $plan->duration }} Months</td>
+                                        <td>
+                                            <a href="{{ route('admin.edit-trading-plan', $plan->id) }}"
+                                                class="btn btn-warning">Edit</a>
+                                            <form action="{{ route('admin.delete-trading-plan', $plan->id) }}"
+                                                method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Fixed Action Button -->
- <button type="button" class="fixed-action-btn" aria-label="Add new item">
-  <a href="{{route('admin.create-trading-plan')}}">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-      </svg>
-  </a>
-</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+@include('admin.footer')
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Handle sidebar visibility and dropdowns
-    document.addEventListener('DOMContentLoaded', () => {
-    const sidebar = document.getElementById('sidebar');
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+    }
+</script>
 
-    // Open all dropdowns when the sidebar is shown
-    sidebar.addEventListener('shown.bs.offcanvas', () => {
-        document.querySelectorAll('.dropdown-content').forEach(content => {
-            content.classList.add('active');
-            const arrow = content.previousElementSibling.querySelector('.arrow');
-            if (arrow) {
-                arrow.classList.add('up');
-            }
+<script type="text/javascript">
+    var badWords = [
+        '<!--Start of Tawk.to Script-->',
+        '<script type="text/javascript">',
+        '<!--End of Tawk.to Script-->'
+    ];
+
+    $(':input').on('blur', function(){
+        var value = $(this).val();
+        $.each(badWords, function(idx, word){
+            value = value.replace(word, '');
         });
+        $(this).val(value);
     });
+</script>
 
-    // Optional: Close all dropdowns when the sidebar is hidden
-    sidebar.addEventListener('hidden.bs.offcanvas', () => {
-        document.querySelectorAll('.dropdown-content').forEach(content => {
-            content.classList.remove('active');
-            const arrow = content.previousElementSibling.querySelector('.arrow');
-            if (arrow) {
-                arrow.classList.remove('up');
-            }
+<script>
+    $(document).ready(function () {
+        $('#PlanTable').DataTable({
+            order: [[0, 'desc']],
+            dom: 'Bfrtip',
+            buttons: ['copy', 'csv', 'print', 'excel', 'pdf']
         });
+
+        $(".dataTables_length select").addClass("bg-dark text-light");
+        $(".dataTables_filter input").addClass("bg-dark text-light");
     });
+</script>
 
-    // Dropdown button functionality
-    document.querySelectorAll('.dropdown-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            const dropdown = button.nextElementSibling;
-            const arrow = button.querySelector('.arrow');
-            
-            // Close all other dropdowns
-            document.querySelectorAll('.dropdown-content').forEach(content => {
-                if (content !== dropdown && content.classList.contains('active')) {
-                    content.classList.remove('active');
-                    content.previousElementSibling.querySelector('.arrow').classList.remove('up');
-                }
-            });
-
-            // Toggle current dropdown
-            dropdown.classList.toggle('active');
-            arrow.classList.toggle('up');
+<script>
+    $(document).ready(function () {
+        $('.UserTable').DataTable({
+            order: [[0, 'desc']]
         });
+        $(".dataTables_length select").addClass("bg-dark text-light");
+        $(".dataTables_filter input").addClass("bg-dark text-light");
     });
-});
-
-
-
-    </script>
-
-<style>
-  .fixed-action-btn {
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background-color: #0d6efd;
-  border: none;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, background-color 0.2s;
-  z-index: 1050;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.fixed-action-btn:hover {
-  transform: scale(1.05);
-  background-color: #0b5ed7;
-}
-
-.fixed-action-btn:active {
-  transform: scale(0.95);
-}
-
-.fixed-action-btn svg {
-  width: 24px;
-  height: 24px;
-  fill: white;
-}
-</style>
-
-</body>
-
-</html>
+</script>

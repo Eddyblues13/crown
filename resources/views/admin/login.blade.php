@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="CrATpF4qseMdsrhXsXdzV2Al8jdRp6y5CWKqFYER">
-    <title>stock market-hq | User Login</title>
+    <title>Vault Capital | User Login</title>
 
 
     <link rel="icon" href="account/storage/app/public/photos/uPYDzhfavicon.png1677339254" type="image/png" />
@@ -71,40 +71,44 @@
 
                 <div class="col-12 col-md-6 col-lg-6 col-sm-10 col-xl-6">
                     <div class="text-center">
-                        <a href="/"><img src="account/storage/app/public/photos/uPYDzhlogo.jpg1677339253" alt="" class="mb-3 img-fluid auth__logo"style="width:180px"></a>
+                        <a href="/"><img src="account/storage/app/public/photos/uPYDzhlogo.jpg1677339253" alt=""
+                                class="mb-3 img-fluid auth__logo" style="width:180px"></a>
                     </div>
 
                     <div class="bg-white shadow card login-page roundedd border-1 ">
                         <div class="card-body">
-                <x-validation-errors class="mb-4" />
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                            <x-validation-errors class="mb-4" />
+                            @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
 
-                @if(Session::has('error-message'))
-                    <p class="alert alert-info">{{ Session::get('error-message') }}</p>
-                @endif
-             @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ session('status') }}
-            </div>
-            @endif
+                            @if(Session::has('error-message'))
+                            <p class="alert alert-info">{{ Session::get('error-message') }}</p>
+                            @endif
+                            @if (session('status'))
+                            <div class="mb-4 font-medium text-sm text-green-600">
+                                {{ session('status') }}
+                            </div>
+                            @endif
                             <h4 class="text-center card-title">Admin Login</h4>
                             <form method="POST" action="{{ route('admin.login.store') }}">
-                                   @csrf
+                                @csrf
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label><h4>Enter Email <span class="text-danger">*</span></h4></label>
+                                            <label>
+                                                <h4>Enter Email <span class="text-danger">*</span></h4>
+                                            </label>
                                             <div class="position-relative">
                                                 <i data-feather="mail" class="fea icon-sm icons"></i>
-                                                <input type="email" class="pl-5 form-control" name="email" :value="old('email')" id="email" placeholder="" required>
+                                                <input type="email" class="pl-5 form-control" name="email"
+                                                    :value="old('email')" id="email" placeholder="" required>
                                             </div>
                                         </div>
                                     </div>
@@ -112,10 +116,13 @@
 
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label><h4>Enter Password <span class="text-danger">*</span></h4></label>
+                                            <label>
+                                                <h4>Enter Password <span class="text-danger">*</span></h4>
+                                            </label>
                                             <div class="position-relative">
                                                 <i data-feather="key" class="fea icon-sm icons"></i>
-                                                <input type="password" class="pl-5 form-control" name="password" id="password" placeholder="Enter Password" required>
+                                                <input type="password" class="pl-5 form-control" name="password"
+                                                    id="password" placeholder="Enter Password" required>
                                             </div>
                                         </div>
                                     </div>
@@ -125,16 +132,18 @@
                                         <div class="d-flex justify-content-between">
                                             <div class="form-group">
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck1" name="remember">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                        id="customCheck1" name="remember">
                                                     <label class="custom-control-label" for="customCheck1">Remember
                                                         me</label>
                                                 </div>
                                             </div>
                                             <p class="mb-0 forgot-pass">
-                                                     @if (Route::has('password.request'))
-                                       <a href="{{ route('password.request') }}" class="text-dark font-weight-bold">Forgot password ?</a>
+                                                @if (Route::has('password.request'))
+                                                <a href="{{ route('password.request') }}"
+                                                    class="text-dark font-weight-bold">Forgot password ?</a>
 
-                                                    @endif
+                                                @endif
                                             </p>
                                         </div>
                                     </div>
@@ -162,12 +171,14 @@
 
                                     <div class="text-center col-12">
                                         <p class="mt-3 mb-0"><small class="mr-2 text-dark">Don't have an account
-                                                ?</small> <a href="{{route('register')}}" class="text-dark font-weight-bold">Sign Up</a></p>
+                                                ?</small> <a href="{{route('register')}}"
+                                                class="text-dark font-weight-bold">Sign Up</a></p>
                                     </div>
                                     <!--end col-->
 
                                     <div class="text-center col-12">
-                                        <p class="mt-4 mb-0"><small class="mr-2 text-dark">&copy; Copyright  2023 &nbsp; stock market-hq &nbsp; All Rights Reserved.</small>
+                                        <p class="mt-4 mb-0"><small class="mr-2 text-dark">&copy; Copyright 2023 &nbsp;
+                                                Vault Capital &nbsp; All Rights Reserved.</small>
                                         </p>
                                     </div>
                                 </div>

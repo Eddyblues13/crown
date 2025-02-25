@@ -6,10 +6,10 @@
   <div class="alert alert-success mb-2">{{session('message')}}</div>
          @endif
 					<div class="mt-2 mb-4">
-						<h1 class="title1 text-light d-inline"> Copied traders</h1>
+						<h1 class="title1 text-light d-inline"> Coppied traders</h1>
 						<div class="d-inline">
 							<div class="float-right btn-group">
-								<a class="btn btn-primary btn-sm"> <i class="fa fa-arrow-left"></i> back</a>
+								<a class="btn btn-primary btn-sm" "> <i class="fa fa-arrow-left"></i> back</a>
 							</div>
 						</div>
 					</div>

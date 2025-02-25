@@ -423,7 +423,7 @@
                                         </form>
                                     </div>
                                 </div>
-                            </div>
+                            </div> 
                             <div class="tab-pane fade" id="gate">
                                 <div class="row">
                                     <div class="col-md-12">

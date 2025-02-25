@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use App\Models\Trade;
+use App\Models\TradeHistory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -13,16 +14,30 @@ class TradeController extends Controller
     // Display trades for a specific user
     public function index($id)
     {
+
         // Fetch the user
         $user = User::findOrFail($id);
 
-        // Fetch all trades associated with the user
-        //$trades = Trade::where('user_id', $user->id)->get();
-        $trades = Trade::with('user')->where('user_id', $id)->get();
 
+        // Check if there is any trade history for this user
+        $hasTradeHistory = TradeHistory::where('user_id', $user->id)->exists();
 
-        return view('admin.trades', compact('user', 'trades'));
+        // Redirect or allow access based on the condition
+        if (!$hasTradeHistory) {
+            return redirect()->back()->with('message', 'This user has no trade history. You cannot proceed.');
+        }
+
+        // Fetch unique trader names from the trade_histories table
+        // Check if there is any trade history for this user
+        $traders = TradeHistory::where('user_id', $user->id)->get();
+        $trades = Trade::where('user_id', $user->id)->get();
+
+        return view('admin.trades', compact('user', 'trades','traders', 'hasTradeHistory'));
     }
+
+
+
+
     public function store(Request $request)
     {
         $validated = $request->validate([

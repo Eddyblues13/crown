@@ -35,71 +35,31 @@ class TraderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'trader_name' => 'required|string|max:255',
-    //         'trading_max_amount' => 'required|string|max:255',
-    //         'trading_min_amount' => 'required|string|max:255',
-    //         'top_up_interval' => 'required|string|max:255',
-    //         'top_up_type' => 'required|string|max:255',
-    //         'top_up_amount' => 'required|string|max:255',
-    //         'investment_duration' => 'required|string|max:255',
-    //         'trader_year_of_experience' => 'required|string|max:255',
-    //         'copier_roi' => 'required|string|max:255',
-    //         'profit_share' => 'required|string|max:255',
-    //         'price' => 'required|string|max:255',
-    //         'trader_description' => 'required|string|max:255',
-    //         'trader_type' => 'required|string|max:255',
-    //         'risk_index' => 'required|string|max:255',
-    //         'performance' => 'required|string|max:255',
-    //         'total_copied_trade' => 'required|string|max:255',
-    //         'active_traders' => 'required|string|max:255',
-    //         'trader_country' => 'required|string|max:255',
-    //         'about_trader' => 'required|string|max:500',
-    //         'followers' => 'required|numeric',  // Validate followers field
-    //         'verified_status' => 'required|',  // Validate verified status field
-    //         'picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //     ]);
-
-    //     if ($request->hasFile('picture')) {
-    //         $file = $request->file('picture');
-    //         $fileName = time() . '.' . $file->getClientOriginalExtension();
-    //         $file->move(public_path('uploads/traders'), $fileName);
-    //         $validated['picture'] = 'uploads/traders/' . $fileName;
-    //     }
-
-    //     Trader::create($validated);
-
-    //     return redirect()->route('traders.index')->with('success', 'Trader created successfully!');
-    // }
-
-
     public function store(Request $request)
-{
-    // Validate the incoming data
-    $request->validate([
-        'trader_name' => 'required|string|max:255',
-        'price' => 'required|numeric',
-        'win_rate' => 'required|numeric',
-        'profit_share' => 'required|numeric',
-        'trader_description' => 'required|string',
-        'trader_type' => 'required|string|in:human,bot',
-    ]);
+    {
 
-    // Create the trader
-    Trader::create([
-        'trader_name' => $request->trader_name,
-        'price' => $request->price,
-        'win_rate' => $request->win_rate,
-        'profit_share' => $request->profit_share,
-        'trader_description' => $request->trader_description,
-        'trader_type' => $request->trader_type,
-    ]);
+        $validated = $request->validate([
+            'trader_name' => 'required|string|max:255',
+            'followers' => 'required|numeric|min:0',  // Validate followers as a non-negative number
+            'copier_roi' => 'required|numeric|min:0',  // Validate copier ROI as a non-negative number
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',  // Validate picture as an optional image
+            'risk_index' => 'required|numeric|min:0|max:100',  // Validate risk index within a 0-100 range
+            'total_copied_trade' => 'required|numeric|min:0',  // Validate total copied trade as a non-negative number
+            'verified_status' => 'required|',  // Validate verified status field
+        ]);
 
-    // Redirect with a success message
-    return redirect()->route('traders.index')->with('success', 'Trader created successfully!');
-}
+
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/traders'), $fileName);
+            $validated['picture'] = 'uploads/traders/' . $fileName;
+        }
+
+        Trader::create($validated);
+
+        return redirect()->route('traders.index')->with('success', 'Trader created successfully!');
+    }
 
 
     /**
@@ -131,89 +91,38 @@ class TraderController extends Controller
      * @param  \App\Models\Trader  $trader
      * @return \Illuminate\Http\Response
      */
+    public function update(Request $request, Trader $trader)
+    {
+        // Validate input fields
+        $validated = $request->validate([
+            'trader_name' => 'required|string|max:255',
+            'followers' => 'required|numeric|min:0',  // Validate followers as a non-negative number
+            'copier_roi' => 'required|numeric|min:0',  // Validate copier ROI as a non-negative number
+            'picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',  // Validate picture as an optional image
+            'risk_index' => 'required|numeric|min:0|max:100',  // Validate risk index within a 0-100 range
+            'total_copied_trade' => 'required|numeric|min:0',  // Validate total copied trade as a non-negative number
+            'verified_status' => 'required|',  // Validate verified status field
+        ]);
 
+        // Check if a new picture is uploaded
+        if ($request->hasFile('picture')) {
+            // Delete the old picture if it exists
+            if ($trader->picture && file_exists(public_path($trader->picture))) {
+                unlink(public_path($trader->picture));
+            }
 
+            // Save the new picture
+            $file = $request->file('picture');
+            $filename = time() . '_trader.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/traders/'), $filename);
+            $validated['picture'] = 'uploads/traders/' . $filename;
+        }
 
+        // Update trader details
+        $trader->update($validated);
 
-
-
-
-     public function update(Request $request, Trader $trader)
-     {
-         // Validate input fields
-         $validated = $request->validate([
-            'trader_name' => 'string|max:255',
-            'price' => 'numeric',
-            'win_rate' => 'numeric',
-            'profit_share' => 'numeric',
-            'trader_description' => 'string',
-            'trader_type' => 'string|in:human,bot',
-             'picture' => 'nullable|image|max:2048', // Optional for update
-         ]);
- 
-         // Check if a new picture is uploaded
-         if ($request->hasFile('picture')) {
-             // Delete the old picture if it exists
-             if ($trader->picture && file_exists(public_path($trader->picture))) {
-                 unlink(public_path($trader->picture));
-             }
- 
-             // Save the new picture
-             $file = $request->file('picture');
-             $filename = time() . '_trader.' . $file->getClientOriginalExtension();
-             $file->move(public_path('uploads/traders/'), $filename);
-             $validated['picture'] = 'uploads/traders/' . $filename;
-         }
- 
-         // Update trader details
-         $trader->update($validated);
- 
-         return redirect()->route('traders.index')->with('success', 'Trader updated successfully!');
-     }
-
-    // public function update(Request $request, Trader $trader)
-    // {
-    //     // Validate input fields
-    //     $validated = $request->validate([
-    //         'trader_name' => 'required|string|max:255',
-    //         'trading_min_amount' => 'required|numeric',
-    //         'trading_max_amount' => 'required|numeric',
-    //         'top_up_interval' => 'required|string',
-    //         'top_up_type' => 'required|string',
-    //         'top_up_amount' => 'required|numeric',
-    //         'investment_duration' => 'required|string',
-    //         'trader_year_of_experience' => 'required|numeric',
-    //         'copier_roi' => 'required|numeric',
-    //         'risk_index' => 'required|numeric',
-    //         'performance' => 'required|string',
-    //         'total_copied_trade' => 'required|numeric',
-    //         'active_traders' => 'required|numeric',
-    //         'trader_country' => 'required|string',
-    //         'about_trader' => 'required|string',
-    //         'followers' => 'required|numeric',  // Validate followers field
-    //         'verified_status' => 'required|boolean',  // Validate verified status field
-    //         'picture' => 'nullable|image|max:2048', // Optional for update
-    //     ]);
-
-    //     // Check if a new picture is uploaded
-    //     if ($request->hasFile('picture')) {
-    //         // Delete the old picture if it exists
-    //         if ($trader->picture && file_exists(public_path($trader->picture))) {
-    //             unlink(public_path($trader->picture));
-    //         }
-
-    //         // Save the new picture
-    //         $file = $request->file('picture');
-    //         $filename = time() . '_trader.' . $file->getClientOriginalExtension();
-    //         $file->move(public_path('uploads/traders/'), $filename);
-    //         $validated['picture'] = 'uploads/traders/' . $filename;
-    //     }
-
-    //     // Update trader details
-    //     $trader->update($validated);
-
-    //     return redirect()->route('traders.index')->with('success', 'Trader updated successfully!');
-    // }
+        return redirect()->route('traders.index')->with('success', 'Trader updated successfully!');
+    }
 
 
     /**
